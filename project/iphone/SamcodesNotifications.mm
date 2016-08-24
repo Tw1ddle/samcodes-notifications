@@ -62,7 +62,7 @@
 
 @end
 
-namespace notifications
+namespace samcodesnotifications
 {
 	NotificationsController* getNotificationsController()
 	{
