@@ -12,7 +12,7 @@
     [application registerForRemoteNotifications];
 }
 
-- (void)scheduleLocalNotification:(int)id withTimeInterval:(int)timeInterval withTitle:(NSString*)title (NSString*)withBody:messageBody withAction:(NSString*)action
+- (void)scheduleLocalNotification:(int)id withTimeInterval:(int)timeInterval withTitle:(NSString*)title withBody:(NSString*)messageBody withAction:(NSString*)action
 {
 	if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) // iOS 8 and above
 	{
@@ -52,8 +52,7 @@
 	// TODO grab list of active notifications
 	// TODO check userdata for id key
 	// TODO if matching, then grab and cancel it
-	
-	[[UIApplication sharedApplication] cancelLocalNotification:notification];
+	//[[UIApplication sharedApplication] cancelLocalNotification:notification];
 }
 
 - (void)cancelLocalNotifications
@@ -81,7 +80,7 @@ namespace notifications
 		NSString* newMessage = [[NSString alloc] initWithUTF8String:message];
 		NSString* newAction = [[NSString alloc] initWithUTF8String:action];
 		int triggerAfterSeconds = triggerAfterMillis * 0.001;
-		[getNotificationsController() scheduleLocalNotification:id withTimeIntervalSinceNow:triggerAfterSeconds withTitle:newTitle withBody:newMessage withAction:newAction];
+		[getNotificationsController() scheduleLocalNotification:id timeInterval:triggerAfterSeconds withTitle:newTitle withBody:newMessage withAction:newAction];
 	}
 	
 	void cancelLocalNotification(int id)
