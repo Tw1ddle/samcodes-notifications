@@ -31,7 +31,7 @@
 	notification.timeZone = [NSTimeZone defaultTimeZone];
 	notification.repeatInterval = nil;
 	notification.alertBody = body;
-	if ([notification respondsToSelector:@selector(alertTitle)])
+	if ([notification respondsToSelector:@selector(alertTitle)]) // iOS 8.2 and above
 	{
 		if([title length] != 0)
 		{

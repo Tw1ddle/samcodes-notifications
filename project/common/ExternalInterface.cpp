@@ -12,8 +12,7 @@
 using namespace samcodesnotifications;
 
 #ifdef IPHONE
-
-static value samcodesnotifications_schedule_local_notification(value id) // TODO
+static value samcodesnotifications_schedule_local_notification(value id, value triggerAfterMillis, value title, value message, value action)
 {
 	scheduleLocalNotification(val_int(id), val_int(time), val_string(title), val_string(message), val_string(action));
 	return alloc_null();

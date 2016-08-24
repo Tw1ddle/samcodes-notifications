@@ -1,4 +1,5 @@
 package extension.notifications;
+import cpp.Void;
 
 #if android
 import openfl.utils.JNI;
@@ -16,11 +17,16 @@ class Notifications {
 		Notifications.initBindings();
 	}
 	
+	// Note, keeping these separate since the common parameters serve pretty different purposes
+	#if android
 	public static function scheduleLocalNotification(id:Int, triggerAfterMillis:Int, titleText:String, subtitleText:String, messageBodyText:String, tickerText:String):Void {
 		schedule_local_notification(id, triggerAfterMillis, titleText, subtitleText, messageBodyText, tickerText);
 	}
-	
-	//public static function scheduleLocalNotificationRepeating();
+	#elseif ios
+	public static function scheduleLocalNotification(id:Int, triggerAfterMillis:Int, titleText:String, messageBodyText:String, actionButtonText:String):Void {
+		schedule_local_notification(id, triggerAfterMillis, titleText, messageBodyText, actionButtonText);
+	}
+	#end
 	
 	public static function cancelLocalNotification(id:Int):Void {
 		cancel_local_notification(id);
@@ -31,7 +37,7 @@ class Notifications {
 	}
 
 	private static function initBindings() {
-		schedule_local_notification = initBinding("scheduleLocalNotification", "(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", "schedule_local_notification", 6);
+		schedule_local_notification = initBinding("scheduleLocalNotification", "(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", "schedule_local_notification", 5);
 		cancel_local_notification = initBinding("cancelLocalNotification", "(I)V", "cancel_local_notification", 1);
 		cancel_local_notifications = initBinding("cancelLocalNotifications", "()V", "cancel_local_notifications", 0);
 	}
