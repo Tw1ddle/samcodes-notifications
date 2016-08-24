@@ -1,5 +1,4 @@
 package extension.notifications;
-import cpp.Void;
 
 #if android
 import openfl.utils.JNI;
