@@ -80,16 +80,19 @@ namespace notifications
 		NSString* newMessage = [[NSString alloc] initWithUTF8String:message];
 		NSString* newAction = [[NSString alloc] initWithUTF8String:action];
 		int triggerAfterSeconds = triggerAfterMillis * 0.001;
-		[getNotificationsController() scheduleLocalNotification:id timeInterval:triggerAfterSeconds withTitle:newTitle withBody:newMessage withAction:newAction];
+		NotificationsController* controller = getNotificationsController();
+		[controller scheduleLocalNotification:id timeInterval:triggerAfterSeconds withTitle:newTitle withBody:newMessage withAction:newAction];
 	}
 	
 	void cancelLocalNotification(int id)
 	{
-		[getNotificationsController() cancelLocalNotification:id];
+		NotificationsController* controller = getNotificationsController();
+		[controller cancelLocalNotification:id];
 	}
 	
 	void cancelLocalNotifications()
 	{
-		[getNotificationsController() cancelLocalNotifications];
+		NotificationsController* controller = getNotificationsController();
+		[controller cancelLocalNotifications];
 	}
 }
