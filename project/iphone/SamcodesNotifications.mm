@@ -14,7 +14,7 @@
 
 - (void)scheduleLocalNotification:(int)id withTimeInterval:(int)timeInterval withTitle:(NSString*)title (NSString*)withBody:messageBody withAction:(NSString*)action
 {
-	if ([UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) // iOS 8 and above
+	if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) // iOS 8 and above
 	{
 		UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
 		UIUserNotificationSettings* mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
@@ -65,12 +65,12 @@
 
 namespace notifications
 {
-	NotificationController* getNotificationController()
+	NotificationsController* getNotificationsController()
 	{
-		static NotificationController* controller = NULL;
+		static NotificationsController* controller = NULL;
 		if(controller == NULL)
 		{
-			controller = [[NotificationController alloc] init];
+			controller = [[NotificationsController alloc] init];
 		}
 		return controller;
 	}
@@ -81,16 +81,16 @@ namespace notifications
 		NSString* newMessage = [[NSString alloc] initWithUTF8String:message];
 		NSString* newAction = [[NSString alloc] initWithUTF8String:action];
 		int triggerAfterSeconds = triggerAfterMillis * 0.001;
-		[getNotificationController() scheduleLocalNotification:id withTimeIntervalSinceNow:triggerAfterSeconds withTitle:newTitle withBody:newMessage withAction:newAction];
+		[getNotificationsController() scheduleLocalNotification:id withTimeIntervalSinceNow:triggerAfterSeconds withTitle:newTitle withBody:newMessage withAction:newAction];
 	}
 	
 	void cancelLocalNotification(int id)
 	{
-		[getNotificationController() cancelLocalNotification:id];
+		[getNotificationsController() cancelLocalNotification:id];
 	}
 	
 	void cancelLocalNotifications()
 	{
-		[getNotificationController() cancelLocalNotifications];
+		[getNotificationsController() cancelLocalNotifications];
 	}
 }
