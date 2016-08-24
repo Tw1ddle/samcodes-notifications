@@ -75,12 +75,14 @@ namespace notifications
 		return controller;
 	}
 	
-	void scheduleLocalNotification(int id, int time, const char* title, const char* message, const char* action)
+	void scheduleLocalNotification(int id, int triggerAfterMillis, const char* title, const char* message, const char* action)
 	{
 		NSString* newTitle = [[NSString alloc] initWithUTF8String:title];
 		NSString* newMessage = [[NSString alloc] initWithUTF8String:message];
 		NSString* newAction = [[NSString alloc] initWithUTF8String:action];
-		[getNotificationController() scheduleLocalNotification:id withTimeIntervalSinceNow:time withTitle:newTitle withBody: newMessage withAction:newAction];
+		
+		int triggerAfterSeconds = triggerAfterMillis * 0.001;
+		[getNotificationController() scheduleLocalNotification:id withTimeIntervalSinceNow:triggerAfterSeconds withTitle:newTitle withBody: newMessage withAction:newAction];
 	}
 	
 	void cancelLocalNotification(int id)
