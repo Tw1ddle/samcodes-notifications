@@ -1,0 +1,38 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.samcodes.notifications">
+	<uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
+	<!-- To prevent alarms from being deleted after reboot -->
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	
+	<uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY"/>
+	<!-- Badge permission for Samsung -->
+	<uses-permission android:name="com.sec.android.provider.badge.permission.READ"/>
+	<uses-permission android:name="com.sec.android.provider.badge.permission.WRITE"/>
+	<!-- Badge permission for HTC -->
+	<uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS"/>
+	<uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT"/>
+	<!-- Badge permission for Sony -->
+	<uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE"/>
+	<!-- Badge permission for Apex -->
+	<uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT"/>
+	<!-- Badge permission for Solid -->
+	<uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE"/>
+	
+	 <application>
+		 <receiver android:name="com.samcodes.notifications.IntentReceiver" android:exported="true" android:enabled="true">
+			 <intent-filter>
+				 <action android:name="android.intent.action.BOOT_COMPLETED" />
+				 <!-- Notification slot ids -->
+				 <action android:name="::APP_PACKAGE::.Notification0"/>
+				 <action android:name="::APP_PACKAGE::.Notification1"/>
+				 <action android:name="::APP_PACKAGE::.Notification2"/>
+				 <action android:name="::APP_PACKAGE::.Notification3"/>
+				 <action android:name="::APP_PACKAGE::.Notification4"/>
+				 <action android:name="::APP_PACKAGE::.Notification5"/>
+				 <action android:name="::APP_PACKAGE::.Notification6"/>
+				 <action android:name="::APP_PACKAGE::.Notification7"/>
+				 <action android:name="::APP_PACKAGE::.Notification8"/>
+				 <action android:name="::APP_PACKAGE::.Notification9"/>
+			 </intent-filter>
+		 </receiver>
+	</application>
+</manifest>

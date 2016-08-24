@@ -1,0 +1,1 @@
+zip -0r samcodes-notifications.zip dependencies extension ndll project haxelib.json include.xml README.md CHANGELOG.md LICENSE

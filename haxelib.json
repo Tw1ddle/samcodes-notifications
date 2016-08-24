@@ -1,0 +1,11 @@
+{
+	"name": "samcodes-notifications",
+	"url": "http://samcodes.co.uk/code/",
+	"license": "MIT",
+	"tags": ["notification","notifications","openfl","android","ios","nme"],
+	"description": "Local notifications support for iOS and Android OpenFL targets",
+	"version": "1.0.0",
+	"releasenote": "Initial release",
+	"contributors": ["samcodes"],
+	"dependencies": {}
+}
