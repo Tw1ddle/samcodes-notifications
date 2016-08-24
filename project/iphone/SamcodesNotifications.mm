@@ -12,7 +12,7 @@
     [application registerForRemoteNotifications];
 }
 
-- (void)scheduleLocalNotification:(int)id withTimeInterval(int)timeInterval withTitle:(NSString*)title (NSString*)withBody:body withAction:(NSString*)action
+- (void)scheduleLocalNotification:(int)id withTimeInterval:(int)timeInterval withTitle:(NSString*)title (NSString*)withBody:messageBody withAction:(NSString*)action
 {
 	if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) { // iOS 8 and above
 	{
@@ -30,7 +30,7 @@
 	notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:timeInterval];
 	notification.timeZone = [NSTimeZone defaultTimeZone];
 	notification.repeatInterval = nil;
-	notification.alertBody = body;
+	notification.alertBody = messageBody;
 	if ([notification respondsToSelector:@selector(alertTitle)]) // iOS 8.2 and above
 	{
 		if([title length] != 0)
