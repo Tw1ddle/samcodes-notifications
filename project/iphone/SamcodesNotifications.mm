@@ -14,7 +14,7 @@
 
 - (void)scheduleLocalNotification:(int)id withTimeInterval:(int)timeInterval withTitle:(NSString*)title (NSString*)withBody:messageBody withAction:(NSString*)action
 {
-	if ([application respondsToSelector:@selector(registerUserNotificationSettings:)]) { // iOS 8 and above
+	if ([UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) // iOS 8 and above
 	{
 		UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
 		UIUserNotificationSettings* mySettings = [UIUserNotificationSettings settingsForTypes:types categories:nil];
@@ -80,9 +80,8 @@ namespace notifications
 		NSString* newTitle = [[NSString alloc] initWithUTF8String:title];
 		NSString* newMessage = [[NSString alloc] initWithUTF8String:message];
 		NSString* newAction = [[NSString alloc] initWithUTF8String:action];
-		
 		int triggerAfterSeconds = triggerAfterMillis * 0.001;
-		[getNotificationController() scheduleLocalNotification:id withTimeIntervalSinceNow:triggerAfterSeconds withTitle:newTitle withBody: newMessage withAction:newAction];
+		[getNotificationController() scheduleLocalNotification:id withTimeIntervalSinceNow:triggerAfterSeconds withTitle:newTitle withBody:newMessage withAction:newAction];
 	}
 	
 	void cancelLocalNotification(int id)
