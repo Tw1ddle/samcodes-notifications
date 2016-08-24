@@ -47,7 +47,7 @@
 	[[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
 
-- (void)cancelLocationNotification:(int)id
+- (void)cancelLocalNotification:(int)id
 {
 	// TODO grab list of active notifications
 	// TODO check userdata for id key
