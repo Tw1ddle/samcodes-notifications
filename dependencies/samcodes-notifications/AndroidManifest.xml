@@ -1,7 +1,8 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.samcodes.notifications">
+	<!-- To set alarms -->
 	<uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
-	<!-- To prevent alarms from being deleted after reboot -->
-	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
+	<!-- To receive the boot event, to reschedule alarms, which will otherwise be lost after reboot -->
+	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 	
 	<uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY"/>
 	<!-- Badge permission for Samsung -->
@@ -18,10 +19,10 @@
 	<uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE"/>
 	
 	 <application>
-		 <receiver android:name="com.samcodes.notifications.IntentReceiver" android:exported="true" android:enabled="true">
+		 <receiver android:name="com.samcodes.notifications.NotificationPresenterReceiver" android:exported="true" android:enabled="true">
 			 <intent-filter>
-				 <action android:name="android.intent.action.BOOT_COMPLETED" />
-				 <!-- Notification slot ids -->
+				 <!-- Notification action ids -->
+				 <!-- NOTE when changing the number of notification slots you must also change MAX_NOTIFICATION_SLOTS in Common.java -->
 				 <action android:name="::APP_PACKAGE::.Notification0"/>
 				 <action android:name="::APP_PACKAGE::.Notification1"/>
 				 <action android:name="::APP_PACKAGE::.Notification2"/>
@@ -32,6 +33,16 @@
 				 <action android:name="::APP_PACKAGE::.Notification7"/>
 				 <action android:name="::APP_PACKAGE::.Notification8"/>
 				 <action android:name="::APP_PACKAGE::.Notification9"/>
+			 </intent-filter>
+		 </receiver>
+		
+		 <receiver android:name="com.samcodes.notifications.NotificationBootReceiver" android:exported="true" android:enabled="true">
+			 <intent-filter>
+				 <!-- To reschedule alarms, which will otherwise be lost after reboot -->
+				 <action android:name="android.intent.action.BOOT_COMPLETED" />
+				<!-- HTC devices and possibly others don't catch BOOT_COMPLETED due to their "fast boot" feature, this should help -->
+				 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
+				 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
 			 </intent-filter>
 		 </receiver>
 	</application>

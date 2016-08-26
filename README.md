@@ -1,7 +1,5 @@
 # Haxe Local Notifications
 
-WORK IN PROGRESS
-
 Local notifications support for OpenFL Android/iOS targets.
 
 ## Features

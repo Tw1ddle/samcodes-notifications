@@ -5,6 +5,6 @@
 	<section if="android">
 		<dependency name="samcodes-notifications" path ="dependencies/samcodes-notifications" />
 		<android extension="com.samcodes.notifications.NotificationsExtension" />
-		<template path="dependencies/samcodes-notifications/libs/android-support-v4.jar" rename="deps/samcodes-chartboost/libs/chartboost.jar" />
+		<template path="dependencies/samcodes-notifications/libs/android-support-v4.jar" rename="dependencies/samcodes-notifications/libs/android-support-v4.jar" />
 	</section>
 </project>
