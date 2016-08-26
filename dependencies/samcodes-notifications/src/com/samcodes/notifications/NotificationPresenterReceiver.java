@@ -36,8 +36,8 @@ public class NotificationPresenterReceiver extends BroadcastReceiver {
 			return;
 		}
 		
-		int id = prefs.getInt(Common.ID_TAG, -1);
-		if(id == -1) {
+		int slot = prefs.getInt(Common.SLOT_TAG, -1);
+		if(slot == -1) {
 			return;
 		}
 		String titleText = prefs.getString(Common.TITLE_TEXT_TAG, "");
@@ -45,12 +45,12 @@ public class NotificationPresenterReceiver extends BroadcastReceiver {
 		String messageBodyText = prefs.getString(Common.MESSAGE_BODY_TEXT_TAG, "");
 		String tickerText = prefs.getString(Common.TICKER_TEXT_TAG, "");
 		
-		Common.erasePreference(context, id);
-		sendNotification(context, id, titleText, subtitleText, messageBodyText, tickerText);
+		Common.erasePreference(context, slot);
+		sendNotification(context, slot, titleText, subtitleText, messageBodyText, tickerText);
 	}
 	
 	// Actually send the local notification to the device
-	private static void sendNotification(Context context, int id, String titleText, String subtitleText, String messageBodyText, String tickerText) {
+	private static void sendNotification(Context context, int slot, String titleText, String subtitleText, String messageBodyText, String tickerText) {
 		Context applicationContext = context.getApplicationContext();
 		if(applicationContext == null) {
 			return;
@@ -69,7 +69,7 @@ public class NotificationPresenterReceiver extends BroadcastReceiver {
 			iconId = android.R.drawable.ic_dialog_info;
 		}
 		
-		PendingIntent pendingIntent = PendingIntent.getActivity(applicationContext, id, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
+		PendingIntent pendingIntent = PendingIntent.getActivity(applicationContext, slot, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(applicationContext);
 		builder.setAutoCancel(true);
 		builder.setContentTitle(titleText);
@@ -85,7 +85,7 @@ public class NotificationPresenterReceiver extends BroadcastReceiver {
 		
 		NotificationManager notificationManager = ((NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE));
 		if(notificationManager != null) {
-			notificationManager.notify(id, builder.getNotification());
+			notificationManager.notify(slot, builder.getNotification());
 		}
 	}
 }

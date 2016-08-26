@@ -3,9 +3,10 @@
 
 namespace samcodesnotifications
 {
-	void scheduleLocalNotification(int id, int triggerAfterMillis, const char* title, const char* message, const char* action);
-	void cancelLocalNotification(int id);
+	void scheduleLocalNotification(int slot, int triggerAfterMillis, const char* title, const char* message, const char* action);
+	void cancelLocalNotification(int slot);
 	void cancelLocalNotifications();
+	void setApplicationIconBadgeNumber(int number);
 }
 
 #endif

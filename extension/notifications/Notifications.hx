@@ -18,27 +18,32 @@ class Notifications {
 	
 	// Note, keeping these separate since the common parameters serve pretty different purposes
 	#if android
-	public static function scheduleLocalNotification(id:Int, triggerAfterMillis:Int, titleText:String, subtitleText:String, messageBodyText:String, tickerText:String):Void {
-		schedule_local_notification(id, triggerAfterMillis, titleText, subtitleText, messageBodyText, tickerText);
+	public static function scheduleLocalNotification(slot:Int, triggerAfterMillis:Int, titleText:String, subtitleText:String, messageBodyText:String, tickerText:String):Void {
+		schedule_local_notification(slot, triggerAfterMillis, titleText, subtitleText, messageBodyText, tickerText);
 	}
 	#elseif ios
-	public static function scheduleLocalNotification(id:Int, triggerAfterMillis:Int, titleText:String, messageBodyText:String, actionButtonText:String):Void {
-		schedule_local_notification(id, triggerAfterMillis, titleText, messageBodyText, actionButtonText);
+	public static function scheduleLocalNotification(slot:Int, triggerAfterMillis:Int, titleText:String, messageBodyText:String, actionButtonText:String):Void {
+		schedule_local_notification(slot, triggerAfterMillis, titleText, messageBodyText, actionButtonText);
 	}
 	#end
 	
-	public static function cancelLocalNotification(id:Int):Void {
-		cancel_local_notification(id);
+	public static function cancelLocalNotification(slot:Int):Void {
+		cancel_local_notification(slot);
 	}
 	
 	public static function cancelLocalNotifications():Void {
 		cancel_local_notifications();
 	}
+	
+	public static function setApplicationIconBadgeNumber(number:Int):Void {
+		set_application_icon_badge_number(number);
+	}
 
-	private static function initBindings() {
+	private static function initBindings():Void {
 		schedule_local_notification = initBinding("scheduleLocalNotification", "(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", "schedule_local_notification", 5);
 		cancel_local_notification = initBinding("cancelLocalNotification", "(I)V", "cancel_local_notification", 1);
 		cancel_local_notifications = initBinding("cancelLocalNotifications", "()V", "cancel_local_notifications", 0);
+		set_application_icon_badge_number = initBinding("setApplicationIconBadgeNumber", "(I)V", "set_application_icon_badge_number", 1);
 	}
 	
 	private static inline function initBinding(jniMethod:String, jniSignature:String, ndllMethod:String, argCount:Int):Dynamic {
@@ -69,5 +74,6 @@ class Notifications {
 	private static var schedule_local_notification:Dynamic = null;
 	private static var cancel_local_notification:Dynamic = null;
 	private static var cancel_local_notifications:Dynamic = null;
+	private static var set_application_icon_badge_number:Dynamic = null;
 }
 #end

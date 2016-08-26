@@ -13,27 +13,27 @@ import java.util.Map;
 import org.haxe.extension.Extension;
 
 public class NotificationsExtension extends Extension {
-	public static void scheduleLocalNotification(int id, int triggerAfterMillis, String titleText, String subtitleText, String messageBodyText, String tickerText) {
+	public static void scheduleLocalNotification(int slot, int triggerAfterMillis, String titleText, String subtitleText, String messageBodyText, String tickerText) {
 		Long alertTime = System.currentTimeMillis() + triggerAfterMillis; // UTC time to schedule in milliseconds
-		Common.writePreference(mainContext, id, alertTime, titleText, subtitleText, messageBodyText, tickerText);
-		PendingIntent intent = Common.scheduleLocalNotification(mainContext, id, alertTime, titleText, subtitleText, messageBodyText, tickerText);
-		Common.pendingIntents.put(id, intent);
+		Common.writePreference(mainContext, slot, alertTime, titleText, subtitleText, messageBodyText, tickerText);
+		PendingIntent intent = Common.scheduleLocalNotification(mainContext, slot, alertTime, titleText, subtitleText, messageBodyText, tickerText);
+		Common.pendingIntents.put(slot, intent);
 	}
 	
-	public static void cancelLocalNotification(int id) {
+	public static void cancelLocalNotification(int slot) {
 		NotificationManager notificationManager = ((NotificationManager)mainContext.getSystemService(Context.NOTIFICATION_SERVICE));
 		if(notificationManager != null) {
-			notificationManager.cancel(id);
+			notificationManager.cancel(slot);
 		}
 		
 		AlarmManager alarmManager = ((AlarmManager)mainContext.getSystemService(Context.ALARM_SERVICE));
-		PendingIntent intent = Common.pendingIntents.get(id);
+		PendingIntent intent = Common.pendingIntents.get(slot);
 		if(intent != null && alarmManager != null) {
 			alarmManager.cancel(intent);
 		}
-		Common.pendingIntents.remove(id);
+		Common.pendingIntents.remove(slot);
 		
-		Common.erasePreference(mainContext, id);
+		Common.erasePreference(mainContext, slot);
 	}
 	
 	public static void cancelLocalNotifications() {
@@ -48,9 +48,12 @@ public class NotificationsExtension extends Extension {
 			if(intent != null && alarmManager != null) {
 				alarmManager.cancel(intent);
 			}
-			Integer id = entry.getKey();
-			Common.erasePreference(mainContext, id);
+			Integer slot = entry.getKey();
+			Common.erasePreference(mainContext, slot);
 		}
 		Common.pendingIntents.clear();
+	}
+	
+	public static void setApplicationIconBadgeNumber(int number) {
 	}
 }

@@ -24,7 +24,7 @@ class Common {
 	public static final int MAX_NOTIFICATION_SLOTS = 10; // Maximum number of notification action ids to manage (e.g. 10 -> .Notification0-9)
 	
 	// Tags used for saving notification attributes to shared preferences for later use
-	public static final String ID_TAG = "id";
+	public static final String SLOT_TAG = "id";
 	public static final String UTC_SCHEDULED_TIME = "scheduledtime";
 	public static final String TITLE_TEXT_TAG = "titletext";
 	public static final String SUBTITLE_TEXT_TAG = "subtitletext";
@@ -35,21 +35,21 @@ class Common {
 		return "::APP_PACKAGE::";
 	}
 	
-	public static String getNotificationName(int id) {
-		return getPackageName() + ".Notification" + id;
+	public static String getNotificationName(int slot) {
+		return getPackageName() + ".Notification" + slot;
 	}
 	
-	public static SharedPreferences getNotificationSettings(Context context, int id) {
-		return context.getSharedPreferences(getNotificationName(id), Context.MODE_WORLD_READABLE);
+	public static SharedPreferences getNotificationSettings(Context context, int slot) {
+		return context.getSharedPreferences(getNotificationName(slot), Context.MODE_WORLD_READABLE);
 	}
 	
 	// Write notification data to preferences
-	public static void writePreference(Context context, int id, Long alertTime, String titleText, String subtitleText, String messageBodyText, String tickerText) {
-		SharedPreferences.Editor editor = getNotificationSettings(context, id).edit();
+	public static void writePreference(Context context, int slot, Long alertTime, String titleText, String subtitleText, String messageBodyText, String tickerText) {
+		SharedPreferences.Editor editor = getNotificationSettings(context, slot).edit();
 		if(editor == null) {
 			return;
 		}
-		editor.putInt(ID_TAG, id);
+		editor.putInt(SLOT_TAG, slot);
 		editor.putLong(UTC_SCHEDULED_TIME, alertTime);
 		editor.putString(TITLE_TEXT_TAG, titleText);
 		editor.putString(SUBTITLE_TEXT_TAG, subtitleText);
@@ -59,8 +59,8 @@ class Common {
 	}
 	
 	// Erase notification data from preferences
-	public static void erasePreference(Context context, int id) {
-		SharedPreferences.Editor editor = getNotificationSettings(context, id).edit();
+	public static void erasePreference(Context context, int slot) {
+		SharedPreferences.Editor editor = getNotificationSettings(context, slot).edit();
 		if(editor == null) {
 			return;
 		}
@@ -69,9 +69,9 @@ class Common {
 	}
 	
 	// Schedule a local notification
-	public static PendingIntent scheduleLocalNotification(Context context, int id, Long alertTime, String titleText, String subtitleText, String messageBodyText, String tickerText) {
-		Intent alertIntent = new Intent(getNotificationName(id));
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, id, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT); // Note FLAG_UPDATE_CURRENT updates the intent if it's already active
+	public static PendingIntent scheduleLocalNotification(Context context, int slot, Long alertTime, String titleText, String subtitleText, String messageBodyText, String tickerText) {
+		Intent alertIntent = new Intent(getNotificationName(slot));
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, slot, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT); // Note FLAG_UPDATE_CURRENT updates the intent if it's already active
 		AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 		if(alarmManager != null) {
 			alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, pendingIntent);

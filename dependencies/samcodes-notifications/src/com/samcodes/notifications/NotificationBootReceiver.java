@@ -37,8 +37,8 @@ public class NotificationBootReceiver extends BroadcastReceiver {
 		Long currentTime = System.currentTimeMillis();
 		
 		// Alarm re-registration. This is required because registered alarms are cleared if the device is turned off and rebooted
-		for(int id = 0; id < Common.MAX_NOTIFICATION_SLOTS; id++) {
-			SharedPreferences prefs = Common.getNotificationSettings(context, id);
+		for(int slot = 0; slot < Common.MAX_NOTIFICATION_SLOTS; slot++) {
+			SharedPreferences prefs = Common.getNotificationSettings(context, slot);
 			if(prefs == null) {
 				continue;
 			}
@@ -47,7 +47,7 @@ public class NotificationBootReceiver extends BroadcastReceiver {
 				continue; // Skip unreadable notification data
 			}
 			if(alertTime - currentTime < 0) {
-				Common.erasePreference(context, id); // Skip and erase notifications whose time passed while the phone was powered off
+				Common.erasePreference(context, slot); // Skip and erase notifications whose time passed while the phone was powered off
 				continue;
 			}
 			
@@ -56,8 +56,8 @@ public class NotificationBootReceiver extends BroadcastReceiver {
 			String messageBodyText = prefs.getString(Common.MESSAGE_BODY_TEXT_TAG, "");
 			String tickerText = prefs.getString(Common.TICKER_TEXT_TAG, "");
 			
-			PendingIntent intent = Common.scheduleLocalNotification(context, id, alertTime, titleText, subtitleText, messageBodyText, tickerText);
-			Common.pendingIntents.put(id, intent);
+			PendingIntent intent = Common.scheduleLocalNotification(context, slot, alertTime, titleText, subtitleText, messageBodyText, tickerText);
+			Common.pendingIntents.put(slot, intent);
 		}
 	}
 }

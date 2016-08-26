@@ -21,7 +21,7 @@
 	 <application>
 		 <receiver android:name="com.samcodes.notifications.NotificationPresenterReceiver" android:exported="true" android:enabled="true">
 			 <intent-filter>
-				 <!-- Notification action ids -->
+				 <!-- Notification action slots/ids -->
 				 <!-- NOTE when changing the number of notification slots you must also change MAX_NOTIFICATION_SLOTS in Common.java -->
 				 <action android:name="::APP_PACKAGE::.Notification0"/>
 				 <action android:name="::APP_PACKAGE::.Notification1"/>

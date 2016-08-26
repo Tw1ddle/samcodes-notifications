@@ -5,7 +5,7 @@ Local notifications support for OpenFL Android/iOS targets.
 ## Features
 
 * Schedule, manage and cancel local notifications.
-* ~~Manage app icon notification badge counts.~~
+* Manage application icon notification badge counts.
 
 If there is something you would like adding let me know. Pull requests welcomed too.
 

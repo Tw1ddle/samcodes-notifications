@@ -12,7 +12,7 @@
     [application registerForRemoteNotifications];
 }
 
-- (void)scheduleLocalNotification:(int)id withTimeInterval:(int)timeInterval withTitle:(NSString*)title withBody:(NSString*)messageBody withAction:(NSString*)action
+- (void)scheduleLocalNotification:(int)slot withTimeInterval:(int)timeInterval withTitle:(NSString*)title withBody:(NSString*)messageBody withAction:(NSString*)action
 {
 	if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) // iOS 8 and above
 	{
@@ -31,6 +31,7 @@
 	notification.timeZone = [NSTimeZone defaultTimeZone];
 	notification.repeatInterval = nil;
 	notification.alertBody = messageBody;
+	
 	if ([notification respondsToSelector:@selector(alertTitle)]) // iOS 8.2 and above
 	{
 		if([title length] != 0)
@@ -44,10 +45,14 @@
 	}
 	
 	notification.soundName = UILocalNotificationDefaultSoundName;
+	
+	//NSString* userDataId = [NSString stringWithFormat:@"%d", slot];
+	//notification.userdata
+	
 	[[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
 
-- (void)cancelLocalNotification:(int)id
+- (void)cancelLocalNotification:(int)slot
 {
 	// TODO grab list of active notifications
 	// TODO check userdata for id key
@@ -74,25 +79,30 @@ namespace samcodesnotifications
 		return controller;
 	}
 	
-	void scheduleLocalNotification(int id, int triggerAfterMillis, const char* title, const char* message, const char* action)
+	void scheduleLocalNotification(int slot, int triggerAfterMillis, const char* title, const char* message, const char* action)
 	{
 		NSString* newTitle = [[NSString alloc] initWithUTF8String:title];
 		NSString* newMessage = [[NSString alloc] initWithUTF8String:message];
 		NSString* newAction = [[NSString alloc] initWithUTF8String:action];
 		int triggerAfterSeconds = triggerAfterMillis * 0.001;
 		NotificationsController* controller = getNotificationsController();
-		[controller scheduleLocalNotification:id withTimeInterval:triggerAfterSeconds withTitle:newTitle withBody:newMessage withAction:newAction];
+		[controller scheduleLocalNotification:slot withTimeInterval:triggerAfterSeconds withTitle:newTitle withBody:newMessage withAction:newAction];
 	}
 	
-	void cancelLocalNotification(int id)
+	void cancelLocalNotification(int slot)
 	{
 		NotificationsController* controller = getNotificationsController();
-		[controller cancelLocalNotification:id];
+		[controller cancelLocalNotification:slot];
 	}
 	
 	void cancelLocalNotifications()
 	{
 		NotificationsController* controller = getNotificationsController();
 		[controller cancelLocalNotifications];
+	}
+	
+	void setApplicationIconBadgeNumber(int number)
+	{
+		
 	}
 }
