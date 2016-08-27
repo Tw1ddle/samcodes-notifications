@@ -14,6 +14,7 @@
 
 - (void)scheduleLocalNotification:(int)slot withTimeInterval:(int)timeInterval withTitle:(NSString*)title withBody:(NSString*)messageBody withAction:(NSString*)action
 {
+	// TODO this should go in didFinishLaunchingWithOptions?
 	if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) // iOS 8 and above
 	{
 		UIUserNotificationType types = UIUserNotificationTypeBadge | UIUserNotificationTypeSound | UIUserNotificationTypeAlert;
@@ -65,6 +66,21 @@
 	[[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
+- (void)application:(UIApplication*)application didReceiveLocalNotification:(UILocalNotification*)notification
+{
+    application.applicationIconBadgeNumber += 1; // TODO check if app is in background or foreground?
+}
+
+- (int)getApplicationIconBadgeNumber
+{
+	return [[UIApplication sharedApplication] getApplicationIconBadgeNumber];
+}
+
+- (void)setApplicationIconBadgeNumber:(int)number
+{
+	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:number];
+}
+
 @end
 
 namespace samcodesnotifications
@@ -103,11 +119,13 @@ namespace samcodesnotifications
 	
 	int getApplicationIconBadgeNumber()
 	{
-		
+		NotificationsController* controller = getNotificationsController();
+		return [controller getApplicationIconBadgeNumber];
 	}
 	
 	bool setApplicationIconBadgeNumber(int number)
 	{
-		
+		NotificationsController* controller = getNotificationsController();
+		[controller setApplicationIconBadgeNumber:number];
 	}
 }
