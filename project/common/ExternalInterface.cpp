@@ -42,4 +42,15 @@ bool samcodesnotifications_set_application_icon_badge_number(int number)
 }
 DEFINE_PRIME1(samcodesnotifications_set_application_icon_badge_number)
 
+extern "C" void samcodesnotifications_main()
+{
+	
+}
+DEFINE_ENTRY_POINT(samcodesnotifications_main);
+
+extern "C" int samcodesnotifications_register_prims()
+{
+	return 0;
+}
+
 #endif
