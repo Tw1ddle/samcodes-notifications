@@ -60,12 +60,12 @@
 	NSDictionary* userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:kNotificationSlotKey, [NSNumber numberWithInt:slot], kIncrementBadgeKey, [NSNumber numberWithBool:incrementBadgeCount], nil];
 	notification.userInfo = userInfo;
 	[[UIApplication sharedApplication] scheduleLocalNotification:notification];
-	[recalculateLocalNotificationBadgeCounts];
+	[self recalculateLocalNotificationBadgeCounts];
 }
 
 - (void)cancelLocalNotification:(int)slot
 {
-	NSMutableArray* pendingNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
+	NSArray* pendingNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
 	if (pendingNotifications.count == 0)
 	{
 		return;
@@ -84,7 +84,7 @@
 		}
 		
 		[[UIApplication sharedApplication] cancelLocalNotification:notification];
-		[recalculateLocalNotificationBadgeCounts];
+		[self recalculateLocalNotificationBadgeCounts];
 		return;
 	}
 }
@@ -92,6 +92,17 @@
 - (void)cancelLocalNotifications
 {
 	[[UIApplication sharedApplication] cancelAllLocalNotifications];
+}
+
+- (int) getApplicationIconBadgeNumber
+{
+	return [[UIApplication sharedApplication] getApplicationIconBadgeNumber];
+}
+	
+- (bool) setApplicationIconBadgeNumber:(int)number
+{
+	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:number];
+	[recalculateLocalNotificationBadgeCounts];
 }
 
 // Ensures local notifications set badge numbers correctly
@@ -173,12 +184,13 @@ namespace samcodesnotifications
 	
 	int getApplicationIconBadgeNumber()
 	{
-		return [[UIApplication sharedApplication] getApplicationIconBadgeNumber];
+		NotificationsController* controller = getNotificationsController();
+		return [controller getApplicationIconBadgeNumber];
 	}
 	
 	bool setApplicationIconBadgeNumber(int number)
 	{
-		[[UIApplication sharedApplication] setApplicationIconBadgeNumber:number];
-		[recalculateLocalNotificationBadgeCounts];
+		NotificationsController* controller = getNotificationsController();
+		[controller setApplicationIconBadgeNumber:number];
 	}
 }
