@@ -60,6 +60,7 @@
 	NSDictionary* userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:kNotificationSlotKey, [NSNumber numberWithInt:slot], kIncrementBadgeKey, [NSNumber numberWithBool:incrementBadgeCount], nil];
 	notification.userInfo = userInfo;
 	[[UIApplication sharedApplication] scheduleLocalNotification:notification];
+	[recalculateLocalNotificationBadgeCounts];
 }
 
 - (void)cancelLocalNotification:(int)slot
@@ -73,13 +74,11 @@
 	for (UILocalNotification* notification in pendingNotifications)
 	{
 		NSDictionary* userInfo = notification.userInfo;
-		if(!([userInfo allKeys] containsObject:kNotificationSlotKey]))
+		if(!([[userInfo allKeys] containsObject:kNotificationSlotKey]))
 		{
 			continue;
 		}
-		
-		NSNumber* slot = userInfo[kNotificationSlotKey];
-		if([slot intValue] != slot)
+		if([userInfo[kNotificationSlotKey] intValue] != slot)
 		{
 			continue;
 		}
@@ -93,17 +92,6 @@
 - (void)cancelLocalNotifications
 {
 	[[UIApplication sharedApplication] cancelAllLocalNotifications];
-}
-
-- (int)getApplicationIconBadgeNumber
-{
-	return [[UIApplication sharedApplication] getApplicationIconBadgeNumber];
-}
-
-- (void)setApplicationIconBadgeNumber:(int)number
-{
-	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:number];
-	[recalculateLocalNotificationBadgeCounts];
 }
 
 // Ensures local notifications set badge numbers correctly
@@ -128,7 +116,7 @@
 	for (UILocalNotification* notification in pendingNotifications)
 	{
 		NSDictionary* userInfo = notification.userInfo;
-		if(!([userInfo allKeys] containsObject:kIncrementBadgeKey]))
+		if(!([[userInfo allKeys] containsObject:kIncrementBadgeKey]))
 		{
 			continue;
 		}
@@ -185,13 +173,12 @@ namespace samcodesnotifications
 	
 	int getApplicationIconBadgeNumber()
 	{
-		NotificationsController* controller = getNotificationsController();
-		return [controller getApplicationIconBadgeNumber];
+		return [[UIApplication sharedApplication] getApplicationIconBadgeNumber];
 	}
 	
 	bool setApplicationIconBadgeNumber(int number)
 	{
-		NotificationsController* controller = getNotificationsController();
-		[controller setApplicationIconBadgeNumber:number];
+		[[UIApplication sharedApplication] setApplicationIconBadgeNumber:number];
+		[recalculateLocalNotificationBadgeCounts];
 	}
 }
