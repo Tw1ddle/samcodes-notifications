@@ -2,7 +2,8 @@
 
 #import <UIKit/UIKit.h>
 
-#define kShouldNotificationIncrementBadgeKey @"kIncrementBadgeKey"
+#define kNotificationSlotKey @"kNotificationSlotKey"
+#define kIncrementBadgeKey @"kIncrementBadgeKey"
 
 @interface NotificationsController : NSObject<UIApplicationDelegate>
 @end
@@ -34,7 +35,7 @@
 	// Or if the user just launched the app from a notification
 }
 
-- (void)scheduleLocalNotification:(int)slot withTimeInterval:(int)timeInterval withTitle:(NSString*)title withBody:(NSString*)messageBody withAction:(NSString*)action
+- (void)scheduleLocalNotification:(int)slot withTimeInterval:(int)timeInterval withTitle:(NSString*)title withBody:(NSString*)messageBody withAction:(NSString*)action incrementBadgeCount:(bool)incrementBadgeCount
 {
 	UILocalNotification* notification = [[UILocalNotification alloc] init];
 	notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:timeInterval];
@@ -56,24 +57,36 @@
 	
 	notification.soundName = UILocalNotificationDefaultSoundName;
 	
+	NSDictionary* userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:kNotificationSlotKey, [NSNumber numberWithInt:slot], kIncrementBadgeKey, [NSNumber numberWithBool:incrementBadgeCount], nil];
+	notification.userInfo = userInfo;
 	[[UIApplication sharedApplication] scheduleLocalNotification:notification];
 }
 
 - (void)cancelLocalNotification:(int)slot
 {
 	NSMutableArray* pendingNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
-	if (pendingNotifications.count != 0)
+	if (pendingNotifications.count == 0)
 	{
-		for (UILocalNotification* notification in pendingNotifications)
+		return;
+	}
+	
+	for (UILocalNotification* notification in pendingNotifications)
+	{
+		NSDictionary* userInfo = notification.userInfo;
+		if(!([userInfo allKeys] containsObject:kNotificationSlotKey]))
 		{
-			// TODO check userdata for id key
-			// TODO if matching, then grab and cancel it, and recalculate local badge counts
-			//[[UIApplication sharedApplication] cancelLocalNotification:notification];
-			//if([getApplicationIconBadgeNumber] > 0)
-			//{
-			//	[recalculateLocalNotificationBadgeCounts:currentBadgeNumber--];
-			//}
+			continue;
 		}
+		
+		NSNumber* slot = userInfo[kNotificationSlotKey];
+		if([slot intValue] != slot)
+		{
+			continue;
+		}
+		
+		[[UIApplication sharedApplication] cancelLocalNotification:notification];
+		[recalculateLocalNotificationBadgeCounts];
+		return;
 	}
 }
 
@@ -90,41 +103,46 @@
 - (void)setApplicationIconBadgeNumber:(int)number
 {
 	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:number];
-	[recalculateLocalNotificationBadgeCounts:number];
+	[recalculateLocalNotificationBadgeCounts];
 }
 
 // Ensures local notifications set badge numbers correctly
-- (void)recalculateLocalNotificationBadgeCounts:(int)baseBadgeCount
+- (void)recalculateLocalNotificationBadgeCounts
 {
 	// Get a copy of all pending notifications
 	NSMutableArray* pendingNotifications = [[[UIApplication sharedApplication] scheduledLocalNotifications] mutableCopy];
+	if(pendingNotifications.count == 0)
+	{
+		[pendingNotifications release];
+		return;
+	}
 	
 	// Sort them by fire date
 	NSSortDescriptor* sortDescriptor = [[NSSortDescriptor alloc] initWithKey:@"fireDate" ascending:TRUE];
 	[pendingNotifications sortUsingDescriptors:[NSArray arrayWithObject:sortDescriptor]];
 	[sortDescriptor release];
 	
-	// Reschedule all the local notifications with updated badge numbers
-	if (pendingNotifications.count != 0)
+	// Reschedule all pending local notifications with updated badge numbers
+	[[UIApplication sharedApplication] cancelAllLocalNotifications];
+	NSUInteger badgeNumber = [[UIApplication sharedApplication] getApplicationIconBadgeNumber];
+	for (UILocalNotification* notification in pendingNotifications)
 	{
-		[[UIApplication sharedApplication] cancelAllLocalNotifications];
-		NSUInteger badgeNumber = baseBadgeCount;
-		for (UILocalNotification* notification in pendingNotifications)
+		NSDictionary* userInfo = notification.userInfo;
+		if(!([userInfo allKeys] containsObject:kIncrementBadgeKey]))
 		{
-			//TODO
-			//NSDictionary* userInfo = notification.userInfo;
-			//if([
-			bool shouldIncrementBadgeCount = true;
-			if(shouldIncrementBadgeCount)
-			{
-				notification.applicationIconBadgeNumber = badgeNumber++;
-			}
-			else
-			{
-				notification.applicationIconBadgeNumber = badgeNumber;
-			}
-			[[UIApplication sharedApplication] scheduleLocalNotification:notification];
+			continue;
 		}
+		
+		bool shouldIncrementBadgeCount = (bool)([userInfo[kIncrementBadgeKey] integerValue]);
+		if(shouldIncrementBadgeCount)
+		{
+			notification.applicationIconBadgeNumber = badgeNumber++;
+		}
+		else
+		{
+			notification.applicationIconBadgeNumber = badgeNumber;
+		}
+		[[UIApplication sharedApplication] scheduleLocalNotification:notification];
 	}
 	[pendingNotifications release];
 }
@@ -150,7 +168,7 @@ namespace samcodesnotifications
 		NSString* newAction = [[NSString alloc] initWithUTF8String:action];
 		int triggerAfterSeconds = triggerAfterMillis * 0.001;
 		NotificationsController* controller = getNotificationsController();
-		[controller scheduleLocalNotification:slot withTimeInterval:triggerAfterSeconds withTitle:newTitle withBody:newMessage withAction:newAction];
+		[controller scheduleLocalNotification:slot withTimeInterval:triggerAfterSeconds withTitle:newTitle withBody:newMessage withAction:newAction incrementBadgeCount:incrementBadgeCount];
 	}
 	
 	void cancelLocalNotification(int slot)
