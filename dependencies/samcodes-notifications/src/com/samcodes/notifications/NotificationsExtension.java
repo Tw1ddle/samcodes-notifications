@@ -10,6 +10,7 @@ import android.content.SharedPreferences;
 import com.samcodes.notifications.Common;
 import java.lang.System;
 import java.util.Map;
+import me.leolin.shortcutbadger.ShortcutBadger;
 import org.haxe.extension.Extension;
 
 public class NotificationsExtension extends Extension {
@@ -54,6 +55,11 @@ public class NotificationsExtension extends Extension {
 		Common.pendingIntents.clear();
 	}
 	
-	public static void setApplicationIconBadgeNumber(int number) {
+	public static boolean setApplicationIconBadgeNumber(int number) {
+		if(number <= 0) {
+			return ShortcutBadger.removeCount(mainContext);
+		} else {
+			return ShortcutBadger.applyCount(mainContext, number);
+		}
 	}
 }

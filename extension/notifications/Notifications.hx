@@ -35,15 +35,15 @@ class Notifications {
 		cancel_local_notifications();
 	}
 	
-	public static function setApplicationIconBadgeNumber(number:Int):Void {
-		set_application_icon_badge_number(number);
+	public static function setApplicationIconBadgeNumber(number:Int):Bool {
+		return set_application_icon_badge_number(number);
 	}
 
 	private static function initBindings():Void {
 		schedule_local_notification = initBinding("scheduleLocalNotification", "(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", "schedule_local_notification", 5);
 		cancel_local_notification = initBinding("cancelLocalNotification", "(I)V", "cancel_local_notification", 1);
 		cancel_local_notifications = initBinding("cancelLocalNotifications", "()V", "cancel_local_notifications", 0);
-		set_application_icon_badge_number = initBinding("setApplicationIconBadgeNumber", "(I)V", "set_application_icon_badge_number", 1);
+		set_application_icon_badge_number = initBinding("setApplicationIconBadgeNumber", "(I)Z", "set_application_icon_badge_number", 1);
 	}
 	
 	private static inline function initBinding(jniMethod:String, jniSignature:String, ndllMethod:String, argCount:Int):Dynamic {

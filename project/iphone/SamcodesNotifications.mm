@@ -101,7 +101,7 @@ namespace samcodesnotifications
 		[controller cancelLocalNotifications];
 	}
 	
-	void setApplicationIconBadgeNumber(int number)
+	bool setApplicationIconBadgeNumber(int number)
 	{
 		
 	}

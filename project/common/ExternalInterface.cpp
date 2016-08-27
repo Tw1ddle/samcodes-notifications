@@ -35,8 +35,7 @@ DEFINE_PRIM(samcodesnotifications_cancel_local_notifications, 0);
 
 static value samcodesnotifications_set_application_icon_badge_number(value number)
 {
-	setApplicationBadgeNumber(number);
-	return alloc_null();
+	return alloc_bool(setApplicationBadgeNumber(number));
 }
 
 extern "C" void samcodesnotifications_main()

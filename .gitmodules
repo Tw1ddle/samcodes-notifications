@@ -1,0 +1,3 @@
+[submodule "dependencies/shortcutbadger"]
+	path = dependencies/shortcutbadger
+	url = https://github.com/leolin310148/ShortcutBadger

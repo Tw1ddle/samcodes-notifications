@@ -1,6 +1,6 @@
 # Haxe Local Notifications
 
-Local notifications support for OpenFL Android/iOS targets.
+Local notifications support for Haxe OpenFL Android and iOS targets.
 
 ## Features
 
@@ -31,7 +31,8 @@ See the [demo app](https://github.com/Tw1ddle/samcodes-notifications-demo) for a
 ![Screenshot of iOS notification](https://github.com/Tw1ddle/samcodes-notifications-demo/blob/master/screenshots/notification-ios.gif?raw=true "Notification iOS")
 
 ## Notes
-The haxelib is based on the [local notifications](https://github.com/byrobingames/localnotifications) extension for Stencyl by [byrobingames](https://github.com/byrobingames).
+This haxelib was originally based on the [local notifications](https://github.com/byrobingames/localnotifications) extension for Stencyl by [byrobingames](https://github.com/byrobingames).
+Android app icon badging support is provided by [ShortcutBadger](https://github.com/leolin310148/ShortcutBadger) by [Leo Lin](https://github.com/leolin310148), which is licensed under the Apache License, Version 2.0.
 
 Use ```#if (android || ios)``` conditionals around your imports and calls to this library for cross platform projects, as there is no stub/fallback implementation included in the haxelib.
 

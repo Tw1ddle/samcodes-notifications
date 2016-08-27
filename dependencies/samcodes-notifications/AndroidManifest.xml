@@ -4,19 +4,29 @@
 	<!-- To receive the boot event, to reschedule alarms, which will otherwise be lost after reboot -->
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 	
-	<uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY"/>
+    <!-- General Android badge permissions -->
+    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS"/>
+    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
+    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT"/>
 	<!-- Badge permission for Samsung -->
+	<uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY"/>
 	<uses-permission android:name="com.sec.android.provider.badge.permission.READ"/>
 	<uses-permission android:name="com.sec.android.provider.badge.permission.WRITE"/>
 	<!-- Badge permission for HTC -->
 	<uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS"/>
 	<uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT"/>
 	<!-- Badge permission for Sony -->
-	<uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE"/>
+    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE"/>
+    <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE"/>
 	<!-- Badge permission for Apex -->
 	<uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT"/>
 	<!-- Badge permission for Solid -->
 	<uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE"/>
+    <!-- Badge permission for Huawei-->
+    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
+    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS" />
 	
 	 <application>
 		 <receiver android:name="com.samcodes.notifications.NotificationPresenterReceiver" android:exported="true" android:enabled="true">
@@ -40,7 +50,7 @@
 			 <intent-filter>
 				 <!-- To reschedule alarms, which will otherwise be lost after reboot -->
 				 <action android:name="android.intent.action.BOOT_COMPLETED" />
-				<!-- HTC devices and possibly others don't catch BOOT_COMPLETED due to their "fast boot" feature, this should help -->
+				<!-- HTC devices and possibly others don't catch BOOT_COMPLETED due to the "fast boot" feature, this should help -->
 				 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
 				 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
 			 </intent-filter>

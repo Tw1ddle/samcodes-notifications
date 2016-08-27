@@ -5,6 +5,8 @@
 	<section if="android">
 		<dependency name="samcodes-notifications" path ="dependencies/samcodes-notifications" />
 		<android extension="com.samcodes.notifications.NotificationsExtension" />
-		<template path="dependencies/samcodes-notifications/libs/android-support-v4.jar" rename="dependencies/samcodes-notifications/libs/android-support-v4.jar" />
+		
+		<!-- TODO assets path seems like a dubious way to copy source files around -->
+		<assets path="dependencies/shortcutbadger/ShortcutBadger/src/main/java/" rename="deps/samcodes-notifications/src/" type="template" />
 	</section>
 </project>
