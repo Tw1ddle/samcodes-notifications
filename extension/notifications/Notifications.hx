@@ -35,6 +35,10 @@ class Notifications {
 		cancel_local_notifications();
 	}
 	
+	public static function getApplicationIconBadgeNumber():Int {
+		return get_application_icon_badge_number();
+	}
+	
 	public static function setApplicationIconBadgeNumber(number:Int):Bool {
 		return set_application_icon_badge_number(number);
 	}
@@ -43,6 +47,7 @@ class Notifications {
 		schedule_local_notification = initBinding("scheduleLocalNotification", "(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V", "schedule_local_notification", 6);
 		cancel_local_notification = initBinding("cancelLocalNotification", "(I)V", "cancel_local_notification", 1);
 		cancel_local_notifications = initBinding("cancelLocalNotifications", "()V", "cancel_local_notifications", 0);
+		get_application_icon_badge_number = initBinding("getApplicationIconBadgeNumber", "()I", "get_application_icon_badge_number", 0);
 		set_application_icon_badge_number = initBinding("setApplicationIconBadgeNumber", "(I)Z", "set_application_icon_badge_number", 1);
 	}
 	
@@ -74,6 +79,7 @@ class Notifications {
 	private static var schedule_local_notification:Dynamic = null;
 	private static var cancel_local_notification:Dynamic = null;
 	private static var cancel_local_notifications:Dynamic = null;
+	private static var get_application_icon_badge_number:Dynamic = null;
 	private static var set_application_icon_badge_number:Dynamic = null;
 }
 #end

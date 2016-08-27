@@ -33,6 +33,11 @@ static value samcodesnotifications_cancel_local_notifications()
 }
 DEFINE_PRIM(samcodesnotifications_cancel_local_notifications, 0);
 
+static value samcodesnotifications_get_application_icon_badge_number()
+{
+	return alloc_int(getApplicationBadgeNumber());
+}
+
 static value samcodesnotifications_set_application_icon_badge_number(value number)
 {
 	return alloc_bool(setApplicationBadgeNumber(number));

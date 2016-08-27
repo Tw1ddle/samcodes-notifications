@@ -54,6 +54,10 @@ public class NotificationsExtension extends Extension {
 		Common.pendingIntents.clear();
 	}
 	
+	public static int getApplicationIconBadgeNumber() {
+		return Common.getApplicationIconBadgeNumber(mainContext);
+	}
+	
 	public static boolean setApplicationIconBadgeNumber(int number) {
 		return Common.setApplicationIconBadgeNumber(mainContext, number);
 	}
