@@ -60,7 +60,7 @@ class Notifications {
 		#end
 		
 		#if ios
-		var binding = Prime.load(ndllName, ndllName + "_" + primeMethod, primeSignature, false);
+		var binding = macro Prime.load("samcodesnotifications", "samcodesnotifications" + "_" + primeMethod, primeSignature, false);
 		#end
 		
 		#if debug
@@ -74,9 +74,6 @@ class Notifications {
 	
 	#if android
 	private static inline var packageName:String = "com/samcodes/notifications/NotificationsExtension";
-	#end
-	#if ios
-	private static inline var ndllName:String = "samcodesnotifications";
 	#end
 	
 	private static var schedule_local_notification:Dynamic = null;
