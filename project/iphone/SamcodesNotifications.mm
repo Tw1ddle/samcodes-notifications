@@ -96,13 +96,13 @@
 
 - (int) getApplicationIconBadgeNumber
 {
-	return [[UIApplication sharedApplication] getApplicationIconBadgeNumber];
+	return [UIApplication sharedApplication].applicationIconBadgeNumber;
 }
 	
 - (bool) setApplicationIconBadgeNumber:(int)number
 {
 	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:number];
-	[recalculateLocalNotificationBadgeCounts];
+	[self recalculateLocalNotificationBadgeCounts];
 }
 
 // Ensures local notifications set badge numbers correctly
@@ -123,7 +123,7 @@
 	
 	// Reschedule all pending local notifications with updated badge numbers
 	[[UIApplication sharedApplication] cancelAllLocalNotifications];
-	NSUInteger badgeNumber = [[UIApplication sharedApplication] getApplicationIconBadgeNumber];
+	NSUInteger badgeNumber = [UIApplication sharedApplication].applicationIconBadgeNumber;
 	for (UILocalNotification* notification in pendingNotifications)
 	{
 		NSDictionary* userInfo = notification.userInfo;
