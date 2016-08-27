@@ -101,8 +101,9 @@
 	
 - (bool) setApplicationIconBadgeNumber:(int)number
 {
-	[[UIApplication sharedApplication] setApplicationIconBadgeNumber:number];
+	[UIApplication sharedApplication].applicationIconBadgeNumber = number;
 	[self recalculateLocalNotificationBadgeCounts];
+	return true;
 }
 
 // Ensures local notifications set badge numbers correctly
@@ -191,6 +192,6 @@ namespace samcodesnotifications
 	bool setApplicationIconBadgeNumber(int number)
 	{
 		NotificationsController* controller = getNotificationsController();
-		[controller setApplicationIconBadgeNumber:number];
+		return [controller setApplicationIconBadgeNumber:number];
 	}
 }
