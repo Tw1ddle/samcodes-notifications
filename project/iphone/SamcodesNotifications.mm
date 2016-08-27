@@ -10,11 +10,6 @@
 
 @implementation NotificationsController
 
-- (void)application:(UIApplication*)application didRegisterUserNotificationSettings:(UIUserNotificationSettings*)notificationSettings
-{
-    [application registerForRemoteNotifications];
-}
-
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
 	// Request permissions to provide local notifications
@@ -27,6 +22,7 @@
 	{
 		[[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
 	}
+	return YES;
 }
 
 - (void)application:(UIApplication*)application didReceiveLocalNotification:(UILocalNotification*)notification
