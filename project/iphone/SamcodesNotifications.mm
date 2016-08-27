@@ -12,6 +12,7 @@
 
 - (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
 {
+	NSLog(@"NotificationsController didFinishLaunchingWithOptions");
 	// Request permissions to provide local notifications
 	UIRemoteNotificationType types = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert;
 	if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) // iOS 8 and above
@@ -27,12 +28,15 @@
 
 - (void)application:(UIApplication*)application didReceiveLocalNotification:(UILocalNotification*)notification
 {
+	NSLog(@"NotificationsController didReceiveLocalNotification");
 	// This should be triggered if the app is active in the foreground when a local notification is received
 	// Or if the user just launched the app from a notification
 }
 
 - (void)scheduleLocalNotification:(int)slot withTimeInterval:(int)timeInterval withTitle:(NSString*)title withBody:(NSString*)messageBody withAction:(NSString*)action incrementBadgeCount:(bool)incrementBadgeCount
 {
+	NSLog(@"NotificationsController scheduleLocalNotification");
+	
 	UILocalNotification* notification = [[UILocalNotification alloc] init];
 	notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:timeInterval];
 	notification.timeZone = [NSTimeZone defaultTimeZone];
@@ -61,6 +65,8 @@
 
 - (void)cancelLocalNotification:(int)slot
 {
+	NSLog(@"NotificationsController cancelLocalNotification");
+	
 	NSArray* pendingNotifications = [[UIApplication sharedApplication] scheduledLocalNotifications];
 	if (pendingNotifications.count == 0)
 	{
@@ -87,16 +93,22 @@
 
 - (void)cancelLocalNotifications
 {
+	NSLog(@"NotificationsController cancelLocalNotifications");
+	
 	[[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
 - (int)getApplicationIconBadgeNumber
 {
+	NSLog(@"NotificationsController getApplicationIconBadgeNumber");
+	
 	return [UIApplication sharedApplication].applicationIconBadgeNumber;
 }
 	
 - (bool)setApplicationIconBadgeNumber:(int)number
 {
+	NSLog(@"NotificationsController setApplicationIconBadgeNumber");
+	
 	[UIApplication sharedApplication].applicationIconBadgeNumber = number;
 	[self recalculateLocalNotificationBadgeCounts];
 	return true;
@@ -105,6 +117,8 @@
 // Ensures local notifications set badge numbers correctly
 - (void)recalculateLocalNotificationBadgeCounts
 {
+	NSLog(@"NotificationsController recalculateLocalNotificationBadgeCounts");
+	
 	// Get a copy of all pending notifications
 	NSMutableArray* pendingNotifications = [[[UIApplication sharedApplication] scheduledLocalNotifications] mutableCopy];
 	if(pendingNotifications.count == 0)
