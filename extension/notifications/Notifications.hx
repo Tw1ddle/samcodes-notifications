@@ -1,8 +1,11 @@
 package extension.notifications;
-import cpp.Prime;
 
 #if android
 import openfl.utils.JNI;
+#end
+
+#if ios
+import cpp.Prime;
 #end
 
 #if (android || ios)
