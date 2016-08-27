@@ -90,12 +90,12 @@
 	[[UIApplication sharedApplication] cancelAllLocalNotifications];
 }
 
-- (int) getApplicationIconBadgeNumber
+- (int)getApplicationIconBadgeNumber
 {
 	return [UIApplication sharedApplication].applicationIconBadgeNumber;
 }
 	
-- (bool) setApplicationIconBadgeNumber:(int)number
+- (bool)setApplicationIconBadgeNumber:(int)number
 {
 	[UIApplication sharedApplication].applicationIconBadgeNumber = number;
 	[self recalculateLocalNotificationBadgeCounts];

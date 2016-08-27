@@ -12,31 +12,31 @@
 using namespace samcodesnotifications;
 
 #ifdef IPHONE
-static void samcodesnotifications_schedule_local_notification(int slot, int triggerAfterMillis, HxString title, HxString message, HxString action, bool incrementBadgeCount)
+void samcodesnotifications_schedule_local_notification(int slot, int triggerAfterMillis, HxString title, HxString message, HxString action, bool incrementBadgeCount)
 {
 	scheduleLocalNotification(slot, triggerAfterMillis, title.c_str(), message.c_str(), action.c_str(), incrementBadgeCount);
 }
 DEFINE_PRIME6v(samcodesnotifications_schedule_local_notification);
 
-static void samcodesnotifications_cancel_local_notification(int slot)
+void samcodesnotifications_cancel_local_notification(int slot)
 {
 	cancelLocalNotification(slot);
 }
 DEFINE_PRIME1v(samcodesnotifications_cancel_local_notification);
 
-static void samcodesnotifications_cancel_local_notifications()
+void samcodesnotifications_cancel_local_notifications()
 {
 	cancelLocalNotifications();
 }
 DEFINE_PRIME0v(samcodesnotifications_cancel_local_notifications);
 
-static int samcodesnotifications_get_application_icon_badge_number()
+int samcodesnotifications_get_application_icon_badge_number()
 {
 	return getApplicationIconBadgeNumber();
 }
 DEFINE_PRIME0(samcodesnotifications_get_application_icon_badge_number)
 
-static bool samcodesnotifications_set_application_icon_badge_number(int number)
+bool samcodesnotifications_set_application_icon_badge_number(int number)
 {
 	return setApplicationIconBadgeNumber(number);
 }
