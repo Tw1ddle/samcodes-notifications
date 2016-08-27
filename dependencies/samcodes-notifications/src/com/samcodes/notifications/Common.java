@@ -14,6 +14,7 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ApplicationInfo;
 import android.view.Window;
 import java.util.concurrent.ConcurrentHashMap;
+import me.leolin.shortcutbadger.ShortcutBadger;
 import org.haxe.extension.Extension;
 
 class Common {
@@ -23,6 +24,9 @@ class Common {
 	
 	public static final int MAX_NOTIFICATION_SLOTS = 10; // Maximum number of notification action ids to manage (e.g. 10 -> .Notification0-9)
 	
+	// Tag used for keeping track of last application icon badge count
+	public static final String LAST_BADGE_COUNT_TAG = "lastbadgecount";
+	
 	// Tags used for saving notification attributes to shared preferences for later use
 	public static final String SLOT_TAG = "id";
 	public static final String UTC_SCHEDULED_TIME = "scheduledtime";
@@ -30,6 +34,7 @@ class Common {
 	public static final String SUBTITLE_TEXT_TAG = "subtitletext";
 	public static final String MESSAGE_BODY_TEXT_TAG = "messagetext";
 	public static final String TICKER_TEXT_TAG = "tickertext";
+	public static final String INCREMENT_BADGE_COUNT_TAG = "incrementbadge";
 	
 	public static String getPackageName() {
 		return "::APP_PACKAGE::";
@@ -43,8 +48,12 @@ class Common {
 		return context.getSharedPreferences(getNotificationName(slot), Context.MODE_WORLD_READABLE);
 	}
 	
+	public static SharedPreferences getApplicationIconBadgeSettings(Context context) {
+		return context.getSharedPreferences("notificationsiconbadge", Context.MODE_WORLD_READABLE);
+	}
+	
 	// Write notification data to preferences
-	public static void writePreference(Context context, int slot, Long alertTime, String titleText, String subtitleText, String messageBodyText, String tickerText) {
+	public static void writePreference(Context context, int slot, Long alertTime, String titleText, String subtitleText, String messageBodyText, String tickerText, boolean incrementBadgeCount) {
 		SharedPreferences.Editor editor = getNotificationSettings(context, slot).edit();
 		if(editor == null) {
 			return;
@@ -55,6 +64,7 @@ class Common {
 		editor.putString(SUBTITLE_TEXT_TAG, subtitleText);
 		editor.putString(MESSAGE_BODY_TEXT_TAG, messageBodyText);
 		editor.putString(TICKER_TEXT_TAG, tickerText);
+		editor.putBoolean(INCREMENT_BADGE_COUNT_TAG, incrementBadgeCount);
 		editor.commit();
 	}
 	
@@ -77,5 +87,30 @@ class Common {
 			alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, pendingIntent);
 		}
 		return pendingIntent;
+	}
+	
+	// Get application icon badge number
+	public static int getApplicationIconBadgeNumber(Context context) {
+		SharedPreferences prefs = getApplicationIconBadgeSettings(context);
+		if(prefs == null) {
+			return 0;
+		}
+		return prefs.getInt(LAST_BADGE_COUNT_TAG, 0);
+	}
+	
+	// Set application icon badge number
+	public static boolean setApplicationIconBadgeNumber(Context context, int number) {
+		SharedPreferences.Editor editor = getApplicationIconBadgeSettings(context).edit();
+		if(editor == null) {
+			return false;
+		}
+		editor.putInt(LAST_BADGE_COUNT_TAG, number);
+		editor.commit();
+		
+		if(number <= 0) {
+			return ShortcutBadger.removeCount(context);
+		} else {
+			return ShortcutBadger.applyCount(context, number);
+		}
 	}
 }

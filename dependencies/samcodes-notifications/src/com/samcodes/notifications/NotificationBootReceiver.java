@@ -29,6 +29,9 @@ public class NotificationBootReceiver extends BroadcastReceiver {
 		}
 		
 		registerAlarmsPostBoot(context);
+		
+		// Set the last known badge number on the app icon at boot, in case it was forgotten between reboots
+		Common.setApplicationIconBadgeNumber(context, Common.getApplicationIconBadgeNumber(context));
 	}
 	
 	private static void registerAlarmsPostBoot(Context context) {

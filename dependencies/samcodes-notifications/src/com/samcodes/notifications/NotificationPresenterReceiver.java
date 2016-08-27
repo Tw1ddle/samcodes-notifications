@@ -44,8 +44,13 @@ public class NotificationPresenterReceiver extends BroadcastReceiver {
 		String subtitleText = prefs.getString(Common.SUBTITLE_TEXT_TAG, "");
 		String messageBodyText = prefs.getString(Common.MESSAGE_BODY_TEXT_TAG, "");
 		String tickerText = prefs.getString(Common.TICKER_TEXT_TAG, "");
+		Boolean incrementBadgeCount = prefs.getBoolean(Common.INCREMENT_BADGE_COUNT_TAG, false);
 		
 		Common.erasePreference(context, slot);
+		
+		if(incrementBadgeCount) {
+			Common.setApplicationIconBadgeNumber(context, Common.getApplicationIconBadgeNumber(context) + 1);
+		}
 		sendNotification(context, slot, titleText, subtitleText, messageBodyText, tickerText);
 	}
 	

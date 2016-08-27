@@ -4,11 +4,12 @@
 	<!-- To receive the boot event, to reschedule alarms, which will otherwise be lost after reboot -->
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 	
-    <!-- General Android badge permissions -->
-    <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/>
-    <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS"/>
-    <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/>
-    <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT"/>
+	<!-- General Android Launcher badge permissions, apparently commented out in ShortcutBadger due to Google Play terms violations? -->
+	<!-- <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/> -->
+	<!-- <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS"/> -->
+	<!-- <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/> -->
+	<!-- <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT"/> -->
+	
 	<!-- Badge permission for Samsung -->
 	<uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY"/>
 	<uses-permission android:name="com.sec.android.provider.badge.permission.READ"/>

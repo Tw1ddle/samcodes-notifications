@@ -79,7 +79,7 @@ namespace samcodesnotifications
 		return controller;
 	}
 	
-	void scheduleLocalNotification(int slot, int triggerAfterMillis, const char* title, const char* message, const char* action)
+	void scheduleLocalNotification(int slot, int triggerAfterMillis, const char* title, const char* message, const char* action, bool incrementBadgeCount)
 	{
 		NSString* newTitle = [[NSString alloc] initWithUTF8String:title];
 		NSString* newMessage = [[NSString alloc] initWithUTF8String:message];

@@ -18,12 +18,12 @@ class Notifications {
 	
 	// Note, keeping these separate since the common parameters serve pretty different purposes
 	#if android
-	public static function scheduleLocalNotification(slot:Int, triggerAfterMillis:Int, titleText:String, subtitleText:String, messageBodyText:String, tickerText:String):Void {
-		schedule_local_notification(slot, triggerAfterMillis, titleText, subtitleText, messageBodyText, tickerText);
+	public static function scheduleLocalNotification(slot:Int, triggerAfterMillis:Int, titleText:String, subtitleText:String, messageBodyText:String, tickerText:String, incrementBadgeCount:Bool):Void {
+		schedule_local_notification(slot, triggerAfterMillis, titleText, subtitleText, messageBodyText, tickerText, incrementBadgeCount);
 	}
 	#elseif ios
-	public static function scheduleLocalNotification(slot:Int, triggerAfterMillis:Int, titleText:String, messageBodyText:String, actionButtonText:String):Void {
-		schedule_local_notification(slot, triggerAfterMillis, titleText, messageBodyText, actionButtonText);
+	public static function scheduleLocalNotification(slot:Int, triggerAfterMillis:Int, titleText:String, messageBodyText:String, actionButtonText:String, incrementBadgeCount:Bool):Void {
+		schedule_local_notification(slot, triggerAfterMillis, titleText, messageBodyText, actionButtonText, incrementBadgeCount);
 	}
 	#end
 	
@@ -40,7 +40,7 @@ class Notifications {
 	}
 
 	private static function initBindings():Void {
-		schedule_local_notification = initBinding("scheduleLocalNotification", "(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;)V", "schedule_local_notification", 5);
+		schedule_local_notification = initBinding("scheduleLocalNotification", "(IILjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V", "schedule_local_notification", 6);
 		cancel_local_notification = initBinding("cancelLocalNotification", "(I)V", "cancel_local_notification", 1);
 		cancel_local_notifications = initBinding("cancelLocalNotifications", "()V", "cancel_local_notifications", 0);
 		set_application_icon_badge_number = initBinding("setApplicationIconBadgeNumber", "(I)Z", "set_application_icon_badge_number", 1);

@@ -14,9 +14,9 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 import org.haxe.extension.Extension;
 
 public class NotificationsExtension extends Extension {
-	public static void scheduleLocalNotification(int slot, int triggerAfterMillis, String titleText, String subtitleText, String messageBodyText, String tickerText) {
+	public static void scheduleLocalNotification(int slot, int triggerAfterMillis, String titleText, String subtitleText, String messageBodyText, String tickerText, boolean incrementBadgeCount) {
 		Long alertTime = System.currentTimeMillis() + triggerAfterMillis; // UTC time to schedule in milliseconds
-		Common.writePreference(mainContext, slot, alertTime, titleText, subtitleText, messageBodyText, tickerText);
+		Common.writePreference(mainContext, slot, alertTime, titleText, subtitleText, messageBodyText, tickerText, incrementBadgeCount);
 		PendingIntent intent = Common.scheduleLocalNotification(mainContext, slot, alertTime, titleText, subtitleText, messageBodyText, tickerText);
 		Common.pendingIntents.put(slot, intent);
 	}
@@ -33,7 +33,6 @@ public class NotificationsExtension extends Extension {
 			alarmManager.cancel(intent);
 		}
 		Common.pendingIntents.remove(slot);
-		
 		Common.erasePreference(mainContext, slot);
 	}
 	
@@ -56,10 +55,6 @@ public class NotificationsExtension extends Extension {
 	}
 	
 	public static boolean setApplicationIconBadgeNumber(int number) {
-		if(number <= 0) {
-			return ShortcutBadger.removeCount(mainContext);
-		} else {
-			return ShortcutBadger.applyCount(mainContext, number);
-		}
+		return Common.setApplicationIconBadgeNumber(mainContext, number);
 	}
 }
