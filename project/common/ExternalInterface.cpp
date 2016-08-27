@@ -6,52 +6,40 @@
 #define NEKO_COMPATIBLE
 #endif
 
-#include <hx/CFFI.h>
+#include <hx/CFFIPrime.h>
 #include "SamcodesNotifications.h"
 
 using namespace samcodesnotifications;
 
 #ifdef IPHONE
-static value samcodesnotifications_schedule_local_notification(value slot, value triggerAfterMillis, value title, value message, value action, value incrementBadgeCount)
+static void samcodesnotifications_schedule_local_notification(int slot, int triggerAfterMillis, HxString title, HxString message, HxString action, bool incrementBadgeCount)
 {
-	scheduleLocalNotification(val_int(slot), val_int(triggerAfterMillis), val_string(title), val_string(message), val_string(action), val_bool(incrementBadgeCount));
-	return alloc_null();
+	scheduleLocalNotification(slot, triggerAfterMillis, title.c_str(), message.c_str(), action.c_str(), incrementBadgeCount);
 }
-DEFINE_PRIM(samcodesnotifications_schedule_local_notification, 6);
+DEFINE_PRIME6v(samcodesnotifications_schedule_local_notification);
 
-static value samcodesnotifications_cancel_local_notification(value slot)
+static void samcodesnotifications_cancel_local_notification(int slot)
 {
-	cancelLocalNotification(val_int(slot));
-	return alloc_null();
+	cancelLocalNotification(slot);
 }
-DEFINE_PRIM(samcodesnotifications_cancel_local_notification, 1);
+DEFINE_PRIME1v(samcodesnotifications_cancel_local_notification);
 
-static value samcodesnotifications_cancel_local_notifications()
+static void samcodesnotifications_cancel_local_notifications()
 {
 	cancelLocalNotifications();
-	return alloc_null();
 }
-DEFINE_PRIM(samcodesnotifications_cancel_local_notifications, 0);
+DEFINE_PRIME0v(samcodesnotifications_cancel_local_notifications);
 
-static value samcodesnotifications_get_application_icon_badge_number()
+static int samcodesnotifications_get_application_icon_badge_number()
 {
-	return alloc_int(getApplicationIconBadgeNumber());
+	return getApplicationIconBadgeNumber();
 }
+DEFINE_PRIME0(samcodesnotifications_get_application_icon_badge_number)
 
-static value samcodesnotifications_set_application_icon_badge_number(value number)
+static bool samcodesnotifications_set_application_icon_badge_number(int number)
 {
-	return alloc_bool(setApplicationIconBadgeNumber(val_int(number)));
+	return setApplicationIconBadgeNumber(number);
 }
-
-extern "C" void samcodesnotifications_main()
-{
-	val_int(0);
-}
-DEFINE_ENTRY_POINT(samcodesnotifications_main);
-
-extern "C" int samcodesnotifications_register_prims()
-{
-	return 0;
-}
+DEFINE_PRIME1(samcodesnotifications_set_application_icon_badge_number)
 
 #endif
