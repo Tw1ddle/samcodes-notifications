@@ -4,8 +4,8 @@ package extension.notifications;
 import haxe.macro.Expr;
 #end
 
-class Loader {
-	#if ios
+class PrimeLoader {
+	#if cpp
 	public static function __init__() {
 		cpp.Lib.pushDllSearchPath("project/ndll/" + cpp.Lib.getBinDirectory());
 	}
