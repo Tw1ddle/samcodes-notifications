@@ -138,7 +138,7 @@
 		bool shouldIncrementBadgeCount = (bool)([userInfo[kIncrementBadgeKey] integerValue]);
 		if(shouldIncrementBadgeCount)
 		{
-			notification.applicationIconBadgeNumber = badgeNumber++;
+			notification.applicationIconBadgeNumber = ++badgeNumber;
 		}
 		else
 		{
