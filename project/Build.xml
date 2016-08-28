@@ -12,8 +12,8 @@
 		<file name="iphone/SamcodesNotifications.mm"/>
 	</files>
 	
-	<target id="NDLL" output="${LIBPREFIX}samcodesnotifications${debug_extra}${LIBEXTRA}" tool="linker" toolid="${STD_MODULE_LINK}">
-		<outdir name="../ndll/${BINDIR}"/>
+	<target id="NDLL" output="${LIBPREFIX}samcodesnotifications${HX_TARGET_SUFFIX}" tool="linker" toolid="${STD_MODULE_LINK}">
+		<outdir name="${NDLLDIR}/${BINDIR}"/>
 		<ext value=".ndll" if="windows || mac || linux"/>
 		<files id="common"/>
 		<files id="iphone" if="iphone"/>

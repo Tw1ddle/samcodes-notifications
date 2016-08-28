@@ -17,24 +17,40 @@ class Notifications {
 	}
 	#elseif ios
 	public static function scheduleLocalNotification(slot:Int, triggerAfterMillis:Int, titleText:String, messageBodyText:String, actionButtonText:String, incrementBadgeCount:Bool):Void {
-		schedule_local_notification(slot, triggerAfterMillis, titleText, messageBodyText, actionButtonText, incrementBadgeCount);
+		schedule_local_notification.call(slot, triggerAfterMillis, titleText, messageBodyText, actionButtonText, incrementBadgeCount);
 	}
 	#end
 	
 	public static function cancelLocalNotification(slot:Int):Void {
+		#if android
 		cancel_local_notification(slot);
+		#elseif ios
+		cancel_local_notification.call(slot);
+		#end
 	}
 	
 	public static function cancelLocalNotifications():Void {
+		#if android
 		cancel_local_notifications();
+		#elseif ios
+		cancel_local_notifications.call();
+		#end
 	}
 	
 	public static function getApplicationIconBadgeNumber():Int {
+		#if android
 		return get_application_icon_badge_number();
+		#elseif ios
+		return get_application_icon_badge_number.call();
+		#end
 	}
 	
 	public static function setApplicationIconBadgeNumber(number:Int):Bool {
+		#if android
 		return set_application_icon_badge_number(number);
+		#elseif ios
+		return set_application_icon_badge_number.call(number);
+		#end
 	}
 
 	#if android
