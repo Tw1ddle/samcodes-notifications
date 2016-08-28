@@ -1,7 +1,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android" package="com.samcodes.notifications">
-	<!-- To set alarms -->
+	<!-- To set alarms (to schedule notifications) -->
 	<uses-permission android:name="com.android.alarm.permission.SET_ALARM"/>
-	<!-- To receive the boot event, to reschedule alarms, which will otherwise be lost after reboot -->
+	<!-- To receive the boot event, to reschedule alarms which would otherwise be lost after reboot -->
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 	
 	<!-- General Android Launcher badge permissions, apparently commented out in ShortcutBadger due to Google Play terms violations? -->
@@ -25,12 +25,22 @@
 	<!-- Badge permission for Solid -->
 	<uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE"/>
     <!-- Badge permission for Huawei-->
-    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE" />
-    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS" />
-    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS" />
+    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE"/>
+    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS"/>
+    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS"/>
 	
 	 <application>
-		 <receiver android:name="com.samcodes.notifications.NotificationPresenterReceiver" android:exported="true" android:enabled="true">
+		 <receiver android:name="com.samcodes.notifications.BootReceiver" android:exported="true" android:enabled="true">
+			 <intent-filter>
+				 <!-- To reschedule alarms which would otherwise be lost after reboot -->
+				 <action android:name="android.intent.action.BOOT_COMPLETED"/>
+				<!-- HTC devices and possibly others don't catch BOOT_COMPLETED due to a "fast boot" feature, this should help -->
+				 <action android:name="android.intent.action.QUICKBOOT_POWERON"/>
+				 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON"/>
+			 </intent-filter>
+		 </receiver>
+		
+		 <receiver android:name="com.samcodes.notifications.PresenterReceiver" android:exported="true" android:enabled="true">
 			 <intent-filter>
 				 <!-- Notification action slots/ids -->
 				 <!-- NOTE when changing the number of notification slots you must also change MAX_NOTIFICATION_SLOTS in Common.java -->
@@ -44,16 +54,6 @@
 				 <action android:name="::APP_PACKAGE::.Notification7"/>
 				 <action android:name="::APP_PACKAGE::.Notification8"/>
 				 <action android:name="::APP_PACKAGE::.Notification9"/>
-			 </intent-filter>
-		 </receiver>
-		
-		 <receiver android:name="com.samcodes.notifications.NotificationBootReceiver" android:exported="true" android:enabled="true">
-			 <intent-filter>
-				 <!-- To reschedule alarms, which will otherwise be lost after reboot -->
-				 <action android:name="android.intent.action.BOOT_COMPLETED" />
-				<!-- HTC devices and possibly others don't catch BOOT_COMPLETED due to the "fast boot" feature, this should help -->
-				 <action android:name="android.intent.action.QUICKBOOT_POWERON" />
-				 <action android:name="com.htc.intent.action.QUICKBOOT_POWERON" />
 			 </intent-filter>
 		 </receiver>
 	</application>

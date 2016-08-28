@@ -14,17 +14,20 @@ import android.content.pm.ApplicationInfo;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.view.Window;
+import android.util.Log;
 import com.samcodes.notifications.Common;
 import org.haxe.extension.Extension;
 
-public class NotificationBootReceiver extends BroadcastReceiver {
+public class BootReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if(context == null || intent == null) {
+			Log.i(Common.TAG, "Received boot broadcast with null context or intent");
 			return;
 		}
 		String action = intent.getAction();
 		if(action == null) {
+			Log.i(Common.TAG, "Received boot broadcast with null action");
 			return;
 		}
 		
@@ -40,6 +43,7 @@ public class NotificationBootReceiver extends BroadcastReceiver {
 		Long currentTime = System.currentTimeMillis();
 		
 		// Alarm re-registration. This is required because alarms are cleared when the device is turned off or rebooted
+		Log.i(Common.TAG, "Re-registering application notifications on boot");
 		for(int slot = 0; slot < Common.MAX_NOTIFICATION_SLOTS; slot++) {
 			SharedPreferences prefs = Common.getNotificationSettings(context, slot);
 			if(prefs == null) {

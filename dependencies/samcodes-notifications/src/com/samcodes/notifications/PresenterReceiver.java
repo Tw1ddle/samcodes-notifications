@@ -14,17 +14,20 @@ import android.content.pm.ApplicationInfo;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.view.Window;
+import android.util.Log;
 import com.samcodes.notifications.Common;
 import org.haxe.extension.Extension;
 
-public class NotificationPresenterReceiver extends BroadcastReceiver {
+public class PresenterReceiver extends BroadcastReceiver {
 	@Override
 	public void onReceive(Context context, Intent intent) {
 		if(context == null || intent == null) {
+			Log.i(Common.TAG, "Received notification presentation broadcast with null context or intent");
 			return;
 		}
 		String action = intent.getAction();
 		if(action == null) {
+			Log.i(Common.TAG, "Received notification presentation broadcast with null action");
 			return;
 		}
 		presentNotification(context, action); // Everything should be for presenting local device notifications
@@ -33,11 +36,13 @@ public class NotificationPresenterReceiver extends BroadcastReceiver {
 	private static void presentNotification(Context context, String action) {
 		SharedPreferences prefs = context.getSharedPreferences(action, Context.MODE_WORLD_READABLE);
 		if(prefs == null) {
+			Log.i(Common.TAG, "Failed to read notification preference data");
 			return;
 		}
 		
 		int slot = prefs.getInt(Common.SLOT_TAG, -1);
 		if(slot == -1) {
+			Log.i(Common.TAG, "Failed to read notification slot id");
 			return;
 		}
 		String titleText = prefs.getString(Common.TITLE_TEXT_TAG, "");
@@ -58,6 +63,7 @@ public class NotificationPresenterReceiver extends BroadcastReceiver {
 	private static void sendNotification(Context context, int slot, String titleText, String subtitleText, String messageBodyText, String tickerText) {
 		Context applicationContext = context.getApplicationContext();
 		if(applicationContext == null) {
+			Log.i(Common.TAG, "Failed to get application context");
 			return;
 		}
 		
@@ -71,6 +77,7 @@ public class NotificationPresenterReceiver extends BroadcastReceiver {
 				}
 			}
 		} catch (NameNotFoundException e) {
+			Log.i(Common.TAG, "Failed to get application icon, falling back to default");
 			iconId = android.R.drawable.ic_dialog_info;
 		}
 		

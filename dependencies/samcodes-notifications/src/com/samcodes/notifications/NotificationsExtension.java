@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.util.Log;
 import com.samcodes.notifications.Common;
 import java.lang.System;
 import java.util.Map;
@@ -22,6 +23,8 @@ public class NotificationsExtension extends Extension {
 	}
 	
 	public static void cancelLocalNotification(int slot) {
+		Log.i(Common.TAG, "Cancelling local notification");
+		
 		NotificationManager notificationManager = ((NotificationManager)mainContext.getSystemService(Context.NOTIFICATION_SERVICE));
 		if(notificationManager != null) {
 			notificationManager.cancel(slot);
@@ -31,12 +34,16 @@ public class NotificationsExtension extends Extension {
 		PendingIntent intent = Common.pendingIntents.get(slot);
 		if(intent != null && alarmManager != null) {
 			alarmManager.cancel(intent);
+		} else {
+			Log.i(Common.TAG, "Failed to remove notification from alarmManager, was it scheduled in the first place?");
 		}
 		Common.pendingIntents.remove(slot);
 		Common.erasePreference(mainContext, slot);
 	}
 	
 	public static void cancelLocalNotifications() {
+		Log.i(Common.TAG, "Cancelling all local notifications");
+		
 		NotificationManager notificationManager = ((NotificationManager)mainContext.getSystemService(Context.NOTIFICATION_SERVICE));
 		if(notificationManager != null) {
 			notificationManager.cancelAll();

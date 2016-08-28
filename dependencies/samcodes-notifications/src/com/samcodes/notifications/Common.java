@@ -13,11 +13,14 @@ import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ApplicationInfo;
 import android.view.Window;
+import android.util.Log;
 import java.util.concurrent.ConcurrentHashMap;
 import me.leolin.shortcutbadger.ShortcutBadger;
 import org.haxe.extension.Extension;
 
 class Common {
+	public static final String TAG = "SamcodesNotifications";
+	
 	// Maps pending intent ids to their corresponding intents.
 	// Shared between the broadcastReceiver (that populates it with any pending intents at device boot) and Haxe-facing notification scheduling code
 	public static ConcurrentHashMap<Integer, PendingIntent> pendingIntents = new ConcurrentHashMap<Integer, PendingIntent>();
@@ -56,6 +59,7 @@ class Common {
 	public static void writePreference(Context context, int slot, Long alertTime, String titleText, String subtitleText, String messageBodyText, String tickerText, boolean incrementBadgeCount) {
 		SharedPreferences.Editor editor = getNotificationSettings(context, slot).edit();
 		if(editor == null) {
+			Log.i(TAG, "Failed to write notification to preferences");
 			return;
 		}
 		editor.putInt(SLOT_TAG, slot);
@@ -65,23 +69,33 @@ class Common {
 		editor.putString(MESSAGE_BODY_TEXT_TAG, messageBodyText);
 		editor.putString(TICKER_TEXT_TAG, tickerText);
 		editor.putBoolean(INCREMENT_BADGE_COUNT_TAG, incrementBadgeCount);
-		editor.commit();
+		boolean committed = editor.commit();
+		
+		if(!committed) {
+			Log.i(TAG, "Failed to write notification to preferences");
+		}
 	}
 	
 	// Erase notification data from preferences
 	public static void erasePreference(Context context, int slot) {
 		SharedPreferences.Editor editor = getNotificationSettings(context, slot).edit();
 		if(editor == null) {
+			Log.i(TAG, "Failed to erase notification from preferences");
 			return;
 		}
 		editor.clear();
-		editor.commit();
+		boolean committed = editor.commit();
+		
+		if(!committed) {
+			Log.i(TAG, "Failed to erase notification from preferences");
+		}
 	}
 	
 	// Schedule a local notification
 	public static PendingIntent scheduleLocalNotification(Context context, int slot, Long alertTime, String titleText, String subtitleText, String messageBodyText, String tickerText) {
+		Log.i(TAG, "Scheduling local notification");
 		Intent alertIntent = new Intent(getNotificationName(slot));
-		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, slot, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT); // Note FLAG_UPDATE_CURRENT updates the intent if it's already active
+		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, slot, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 		if(alarmManager != null) {
 			alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, pendingIntent);
@@ -93,8 +107,10 @@ class Common {
 	public static int getApplicationIconBadgeNumber(Context context) {
 		SharedPreferences prefs = getApplicationIconBadgeSettings(context);
 		if(prefs == null) {
+			Log.i(TAG, "Failed to retrieve application icon badge number");
 			return 0;
 		}
+		Log.i(TAG, "Getting application icon badge number");
 		return prefs.getInt(LAST_BADGE_COUNT_TAG, 0);
 	}
 	
@@ -102,14 +118,20 @@ class Common {
 	public static boolean setApplicationIconBadgeNumber(Context context, int number) {
 		SharedPreferences.Editor editor = getApplicationIconBadgeSettings(context).edit();
 		if(editor == null) {
+			Log.i(TAG, "Failed to set application icon badge number");
 			return false;
 		}
 		editor.putInt(LAST_BADGE_COUNT_TAG, number);
-		editor.commit();
+		boolean committed = editor.commit();
+		if(!committed) {
+			Log.i(TAG, "Failed to record last known badge count to preferences");
+		}
 		
 		if(number <= 0) {
+			Log.i(TAG, "Clearing application icon badge number");
 			return ShortcutBadger.removeCount(context);
 		} else {
+			Log.i(TAG, "Setting application icon badge number");
 			return ShortcutBadger.applyCount(context, number);
 		}
 	}

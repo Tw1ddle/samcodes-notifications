@@ -25,7 +25,7 @@ class Notifications {
 		#if android
 		cancel_local_notification(slot);
 		#elseif ios
-		cancel_local_notification.call(slot);
+		cancel_local_notification.call(slot); // Note use of call() seems required with HXCPP functions
 		#end
 	}
 	
@@ -52,7 +52,7 @@ class Notifications {
 		return set_application_icon_badge_number.call(number);
 		#end
 	}
-
+	
 	#if android
 	private static inline var packageName:String = "com/samcodes/notifications/NotificationsExtension";
 	private static inline function bindJNI(jniMethod:String, jniSignature:String) {
