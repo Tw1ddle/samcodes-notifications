@@ -29,9 +29,11 @@ Due to a bug it is not currently possible to cancel individual notifications on 
 
 See the [demo app](https://github.com/Tw1ddle/samcodes-notifications-demo) for a complete example.
 
-![Screenshot of demo app](https://github.com/Tw1ddle/samcodes-notifications-demo/blob/master/screenshots/notification-demo.png?raw=true "Notification Demo")
+Android notifications and badging. Badging is done using [ShortcutBadger](https://github.com/leolin310148/ShortcutBadger):
 
 ![Screenshot of Android notification](https://github.com/Tw1ddle/samcodes-notifications-demo/blob/master/screenshots/notification-android.png?raw=true "Notification Android")
+
+iOS notifications and badging:
 
 ![Screenshot of iOS notification](https://github.com/Tw1ddle/samcodes-notifications-demo/blob/master/screenshots/notification-ios.png?raw=true "Notification iOS")
 
