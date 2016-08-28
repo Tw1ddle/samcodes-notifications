@@ -29,6 +29,9 @@
 {
 	NSLog(@"NotificationsController scheduleLocalNotification");
 	
+	// Cancel local notification (in case one with the same slot was already scheduled)
+	[self cancelLocationNotification:slot];
+	
 	UILocalNotification* notification = [[UILocalNotification alloc] init];
 	notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:timeInterval];
 	notification.timeZone = [NSTimeZone defaultTimeZone];
