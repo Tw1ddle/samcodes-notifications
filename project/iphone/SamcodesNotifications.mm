@@ -10,9 +10,9 @@
 
 @implementation NotificationsController
 
-- (BOOL)application:(UIApplication*)application didFinishLaunchingWithOptions:(NSDictionary*)launchOptions
+- (void)requestNotificationPermissions
 {
-	NSLog(@"NotificationsController didFinishLaunchingWithOptions");
+	NSLog(@"NotificationsController requestNotificationPermissions");
 	// Request permissions to provide local notifications
 	UIRemoteNotificationType types = UIRemoteNotificationTypeBadge | UIRemoteNotificationTypeSound | UIRemoteNotificationTypeAlert;
 	if ([[UIApplication sharedApplication] respondsToSelector:@selector(registerUserNotificationSettings:)]) // iOS 8 and above
@@ -23,17 +23,9 @@
 	{
 		[[UIApplication sharedApplication] registerForRemoteNotificationTypes:types];
 	}
-	return YES;
 }
 
-- (void)application:(UIApplication*)application didReceiveLocalNotification:(UILocalNotification*)notification
-{
-	NSLog(@"NotificationsController didReceiveLocalNotification");
-	// This should be triggered if the app is active in the foreground when a local notification is received
-	// Or if the user just launched the app from a notification
-}
-
-- (void)scheduleLocalNotification:(int)slot withTimeInterval:(int)timeInterval withTitle:(NSString*)title withBody:(NSString*)messageBody withAction:(NSString*)action incrementBadgeCount:(bool)incrementBadgeCount
+- (void)scheduleLocalNotification:(int)slot withTimeInterval:(float)timeInterval withTitle:(NSString*)title withBody:(NSString*)messageBody withAction:(NSString*)action incrementBadgeCount:(bool)incrementBadgeCount
 {
 	NSLog(@"NotificationsController scheduleLocalNotification");
 	
@@ -167,6 +159,7 @@ namespace samcodesnotifications
 		if(controller == NULL)
 		{
 			controller = [[NotificationsController alloc] init];
+			[controller requestNotificationPermissions]; // Request notification permission on first usage
 		}
 		return controller;
 	}
@@ -176,7 +169,7 @@ namespace samcodesnotifications
 		NSString* newTitle = [[NSString alloc] initWithUTF8String:title];
 		NSString* newMessage = [[NSString alloc] initWithUTF8String:message];
 		NSString* newAction = [[NSString alloc] initWithUTF8String:action];
-		int triggerAfterSeconds = triggerAfterMillis * 0.001;
+		float triggerAfterSeconds = (float)triggerAfterMillis * 0.001;
 		NotificationsController* controller = getNotificationsController();
 		[controller scheduleLocalNotification:slot withTimeInterval:triggerAfterSeconds withTitle:newTitle withBody:newMessage withAction:newAction incrementBadgeCount:incrementBadgeCount];
 	}
