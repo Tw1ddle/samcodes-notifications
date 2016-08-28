@@ -22,16 +22,18 @@ Include the haxelib through Project.xml:
 <haxelib name="samcodes-notifications" />
 ```
 
+## Known Issues
+Due to a bug it is not currently possible to cancel individual notifications on iOS, though they can be cancelled all together. This means that if you schedule notifications using the same slots, they will not override each other on iOS, but will on Android.
+
 ## Example
 
 See the [demo app](https://github.com/Tw1ddle/samcodes-notifications-demo) for a complete example.
 
+![Screenshot of demo app](https://github.com/Tw1ddle/samcodes-notifications-demo/blob/master/screenshots/notification-demo.png?raw=true "Notification Demo")
+
 ![Screenshot of Android notification](https://github.com/Tw1ddle/samcodes-notifications-demo/blob/master/screenshots/notification-android.png?raw=true "Notification Android")
 
 ![Screenshot of iOS notification](https://github.com/Tw1ddle/samcodes-notifications-demo/blob/master/screenshots/notification-ios.png?raw=true "Notification iOS")
-
-## Known Issues
-It is not currently possible to cancel individual notifications on iOS, though they can be cancelled all together. This means that if you schedule notifications using the same slots, they will not override each other on iOS, but will on Android.
 
 ## Notes
 This haxelib was originally based on the [local notifications](https://github.com/byrobingames/localnotifications) extension for Stencyl by [byrobingames](https://github.com/byrobingames).
