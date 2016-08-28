@@ -57,7 +57,7 @@
 	
 	notification.soundName = UILocalNotificationDefaultSoundName;
 	
-	NSDictionary* userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:kNotificationSlotKey, [NSNumber numberWithInt:slot], kIncrementBadgeKey, [NSNumber numberWithBool:incrementBadgeCount], nil];
+	NSDictionary* userInfo = [[NSDictionary alloc] initWithObjectsAndKeys:kNotificationSlotKey, [NSString stringWithFormat:@"%d", slot], kIncrementBadgeKey, [NSString stringWithFormat:@"%d", (int)(incrementBadgeCount)], nil];
 	notification.userInfo = userInfo;
 	[[UIApplication sharedApplication] scheduleLocalNotification:notification];
 	[self recalculateLocalNotificationBadgeCounts];
