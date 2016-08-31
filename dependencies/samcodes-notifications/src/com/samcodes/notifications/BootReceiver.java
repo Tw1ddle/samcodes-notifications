@@ -16,6 +16,7 @@ import android.support.v4.app.NotificationCompat.Builder;
 import android.view.Window;
 import android.util.Log;
 import com.samcodes.notifications.Common;
+import java.lang.Math;
 import org.haxe.extension.Extension;
 
 public class BootReceiver extends BroadcastReceiver {
@@ -54,8 +55,10 @@ public class BootReceiver extends BroadcastReceiver {
 				continue; // Skip unreadable/not-set notification data
 			}
 			if(alertTime - currentTime < 0) {
-				Common.erasePreference(context, slot); // Skip and erase notifications whose time passed while the phone was powered off
-				continue;
+				// Reschedule notifications whose time passed while the phone was powered off to the very-near future, preserving order
+				double overdueByMillis = Math.abs(alertTime - currentTime);
+				double orderPreservingDelay = 100 + (1000 / (1 + Math.log10(overdueByMillis + 1)));
+				alertTime = currentTime + Double.valueOf(orderPreservingDelay).longValue();
 			}
 			
 			String titleText = prefs.getString(Common.TITLE_TEXT_TAG, "");
