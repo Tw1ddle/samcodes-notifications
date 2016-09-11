@@ -6,6 +6,7 @@ Local notifications support for Haxe OpenFL Android and iOS targets.
 
 * Schedule, manage and cancel local device notifications.
 * Manage application icon notification badge counts.
+* Open application when notification is tapped.
 
 If there is something you would like adding let me know. Pull requests welcomed too.
 

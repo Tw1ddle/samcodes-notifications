@@ -67,6 +67,7 @@ public class PresenterReceiver extends BroadcastReceiver {
 			return;
 		}
 		
+		// Get application icon
 		int iconId = 0;
 		try {
 			PackageManager pm = context.getPackageManager();
@@ -81,7 +82,25 @@ public class PresenterReceiver extends BroadcastReceiver {
 			iconId = android.R.drawable.ic_dialog_info;
 		}
 		
-		PendingIntent pendingIntent = PendingIntent.getActivity(applicationContext, slot, new Intent(), PendingIntent.FLAG_UPDATE_CURRENT);
+		// Launch or open application on notification tap
+		Intent intent = null;
+		try {
+			PackageManager pm = context.getPackageManager();
+			if(pm != null) {
+				String packageName = context.getPackageName();
+				intent = pm.getLaunchIntentForPackage(packageName);
+				intent.addCategory(Intent.CATEGORY_LAUNCHER); // Should already be set, but just in case
+			}
+		} catch (Exception e) {
+			Log.i(Common.TAG, "Failed to get application launch intent");
+		}
+		
+		if(intent == null) {
+			Log.i(Common.TAG, "Falling back to empty intent");
+			intent = new Intent();
+		}
+		
+		PendingIntent pendingIntent = PendingIntent.getActivity(applicationContext, slot, intent, PendingIntent.FLAG_UPDATE_CURRENT);
 		NotificationCompat.Builder builder = new NotificationCompat.Builder(applicationContext);
 		builder.setAutoCancel(true);
 		builder.setContentTitle(titleText);
