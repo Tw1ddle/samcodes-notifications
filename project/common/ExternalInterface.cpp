@@ -12,7 +12,7 @@
 using namespace samcodesnotifications;
 
 #ifdef IPHONE
-void samcodesnotifications_schedule_local_notification(int slot, int triggerAfterMillis, HxString title, HxString message, HxString action, bool incrementBadgeCount)
+void samcodesnotifications_schedule_local_notification(int slot, float triggerAfterMillis, HxString title, HxString message, HxString action, bool incrementBadgeCount)
 {
 	scheduleLocalNotification(slot, triggerAfterMillis, title.c_str(), message.c_str(), action.c_str(), incrementBadgeCount);
 }
@@ -44,7 +44,6 @@ DEFINE_PRIME1(samcodesnotifications_set_application_icon_badge_number)
 
 extern "C" void samcodesnotifications_main()
 {
-	
 }
 DEFINE_ENTRY_POINT(samcodesnotifications_main);
 
