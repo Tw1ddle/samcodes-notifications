@@ -4,8 +4,8 @@
 	"license": "MIT",
 	"tags": ["notification","notifications","openfl","android","ios","nme"],
 	"description": "Local notification and icon badging support for iOS and Android OpenFL targets",
-	"version": "1.0.0",
-	"releasenote": "Initial release",
+	"version": "1.0.1",
+	"releasenote": "Update to latest Android ShortcutBadger, for better Samsung device support",
 	"contributors": ["samcodes"],
 	"dependencies": {}
 }
