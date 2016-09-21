@@ -1,6 +1,6 @@
 # Haxe Local Notifications
 
-Local notifications support for Haxe OpenFL Android and iOS targets.
+Local notifications support for Haxe OpenFL Android and iOS targets. See the demo [here](https://github.com/Tw1ddle/samcodes-notifications-demo).
 
 ## Features
 
@@ -11,6 +11,8 @@ Local notifications support for Haxe OpenFL Android and iOS targets.
 If there is something you would like adding let me know. Pull requests welcomed too.
 
 ## Install
+
+Get the [haxelib](http://lib.haxe.org/p/samcodes-notifications):
 
 ```bash
 haxelib install samcodes-notifications
