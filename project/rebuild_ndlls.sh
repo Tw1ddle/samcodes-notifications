@@ -1,5 +1,5 @@
 #!/bin/bash
-
+export IPHONE_VER=10.0
 haxelib run hxcpp Build.xml clean
 haxelib run hxcpp Build.xml -Diphoneos
 haxelib run hxcpp Build.xml -Diphoneos -DHXCPP_ARMV7
