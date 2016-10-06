@@ -12,12 +12,12 @@ import extension.notifications.PrimeLoader;
 class Notifications {
 	// Note, keeping these separate since the common parameters serve pretty different purposes
 	#if android
-	public static function scheduleLocalNotification(slot:Int, triggerAfterMillis:Float, titleText:String, subtitleText:String, messageBodyText:String, tickerText:String, incrementBadgeCount:Bool):Void {
-		schedule_local_notification(slot, triggerAfterMillis, titleText, subtitleText, messageBodyText, tickerText, incrementBadgeCount);
+	public static function scheduleLocalNotification(slot:Int, triggerAfterSecs:Float, titleText:String, subtitleText:String, messageBodyText:String, tickerText:String, incrementBadgeCount:Bool):Void {
+		schedule_local_notification(slot, triggerAfterSecs, titleText, subtitleText, messageBodyText, tickerText, incrementBadgeCount);
 	}
 	#elseif ios
-	public static function scheduleLocalNotification(slot:Int, triggerAfterMillis:Float, titleText:String, messageBodyText:String, actionButtonText:String, incrementBadgeCount:Bool):Void {
-		schedule_local_notification.call(slot, triggerAfterMillis, titleText, messageBodyText, actionButtonText, incrementBadgeCount);
+	public static function scheduleLocalNotification(slot:Int, triggerAfterSecs:Float, titleText:String, messageBodyText:String, actionButtonText:String, incrementBadgeCount:Bool):Void {
+		schedule_local_notification.call(slot, triggerAfterSecs, titleText, messageBodyText, actionButtonText, incrementBadgeCount);
 	}
 	#end
 	

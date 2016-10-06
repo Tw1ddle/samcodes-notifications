@@ -167,14 +167,13 @@ namespace samcodesnotifications
 		return controller;
 	}
 	
-	void scheduleLocalNotification(int slot, float triggerAfterMillis, const char* title, const char* message, const char* action, bool incrementBadgeCount)
+	void scheduleLocalNotification(int slot, float triggerAfterSecs, const char* title, const char* message, const char* action, bool incrementBadgeCount)
 	{
 		NSString* newTitle = [[NSString alloc] initWithUTF8String:title];
 		NSString* newMessage = [[NSString alloc] initWithUTF8String:message];
 		NSString* newAction = [[NSString alloc] initWithUTF8String:action];
-		float triggerAfterSeconds = triggerAfterMillis * 0.001;
 		NotificationsController* controller = getNotificationsController();
-		[controller scheduleLocalNotification:slot withTimeInterval:triggerAfterSeconds withTitle:newTitle withBody:newMessage withAction:newAction incrementBadgeCount:incrementBadgeCount];
+		[controller scheduleLocalNotification:slot withTimeInterval:triggerAfterSecs withTitle:newTitle withBody:newMessage withAction:newAction incrementBadgeCount:incrementBadgeCount];
 	}
 	
 	void cancelLocalNotification(int slot)

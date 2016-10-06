@@ -12,9 +12,9 @@
 using namespace samcodesnotifications;
 
 #ifdef IPHONE
-void samcodesnotifications_schedule_local_notification(int slot, float triggerAfterMillis, HxString title, HxString message, HxString action, bool incrementBadgeCount)
+void samcodesnotifications_schedule_local_notification(int slot, float triggerAfterSecs, HxString title, HxString message, HxString action, bool incrementBadgeCount)
 {
-	scheduleLocalNotification(slot, triggerAfterMillis, title.c_str(), message.c_str(), action.c_str(), incrementBadgeCount);
+	scheduleLocalNotification(slot, triggerAfterSecs, title.c_str(), message.c_str(), action.c_str(), incrementBadgeCount);
 }
 DEFINE_PRIME6v(samcodesnotifications_schedule_local_notification);
 
