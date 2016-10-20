@@ -4,8 +4,8 @@
 	"license": "MIT",
 	"tags": ["notification","notifications","openfl","android","ios","nme"],
 	"description": "Local notification and icon badging support for iOS and Android OpenFL targets",
-	"version": "1.0.2",
-	"releasenote": "Breaking change, specify notification delays in seconds now. Other minor bugfixes.",
+	"version": "1.0.3",
+	"releasenote": "Minor tweaks to Android notification icon appearances",
 	"contributors": ["samcodes"],
 	"dependencies": {}
 }
