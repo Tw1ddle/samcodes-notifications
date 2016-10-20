@@ -11,6 +11,8 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ApplicationInfo;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.view.Window;
@@ -67,20 +69,26 @@ public class PresenterReceiver extends BroadcastReceiver {
 			return;
 		}
 		
-		// Get application icon
-		int iconId = 0;
+		// Get small application icon
+		int smallIconId = android.R.drawable.ic_dialog_info;
+		
+		// Get large application icon
+		int largeIconId = 0;
 		try {
 			PackageManager pm = context.getPackageManager();
 			if(pm != null) {
 				ApplicationInfo ai = pm.getApplicationInfo(Common.getPackageName(), 0);
 				if(ai != null) {
-					iconId = ai.icon;
+					largeIconId = ai.icon;
 				}
 			}
 		} catch (NameNotFoundException e) {
 			Log.i(Common.TAG, "Failed to get application icon, falling back to default");
-			iconId = android.R.drawable.ic_dialog_info;
+			largeIconId = android.R.drawable.ic_dialog_alert;
 		}
+		
+		// Get large application icon
+		Bitmap largeIcon = BitmapFactory.decodeResource(applicationContext.getResources(), largeIconId);
 		
 		// Launch or open application on notification tap
 		Intent intent = null;
@@ -107,7 +115,10 @@ public class PresenterReceiver extends BroadcastReceiver {
 		builder.setSubText(subtitleText);
 		builder.setContentText(messageBodyText);
 		builder.setTicker(tickerText);
-		builder.setSmallIcon(iconId);
+		if(largeIcon != null) {
+			builder.setLargeIcon(largeIcon);
+		}
+		builder.setSmallIcon(smallIconId);
 		builder.setContentIntent(pendingIntent);
 		builder.setOngoing(false);
 		builder.setWhen(System.currentTimeMillis());
