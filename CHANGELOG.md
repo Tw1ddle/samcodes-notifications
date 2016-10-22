@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.0.3 -> 1.0.4
+ * Fix bug displaying high dpi notification icons on some devices.
+
 ## 1.0.2 -> 1.0.3
 * Minor tweaks to Android notification icon appearances.
 

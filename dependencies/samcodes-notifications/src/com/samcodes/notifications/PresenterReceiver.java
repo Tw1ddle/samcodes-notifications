@@ -13,6 +13,8 @@ import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ApplicationInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.R.dimen;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.app.NotificationCompat.Builder;
 import android.view.Window;
@@ -89,6 +91,15 @@ public class PresenterReceiver extends BroadcastReceiver {
 		
 		// Get large application icon
 		Bitmap largeIcon = BitmapFactory.decodeResource(applicationContext.getResources(), largeIconId);
+		
+		// Scale it down if it's too big
+		if(android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.HONEYCOMB) {
+			int width = android.R.dimen.notification_large_icon_width > 0 ? android.R.dimen.notification_large_icon_width : 150;
+			int height = android.R.dimen.notification_large_icon_height > 0 ? android.R.dimen.notification_large_icon_height : 150;
+			if(largeIcon.getWidth() > width || largeIcon.getHeight() > height) {
+				largeIcon = Bitmap.createScaledBitmap(largeIcon, width, height, false);
+			}
+		}
 		
 		// Launch or open application on notification tap
 		Intent intent = null;

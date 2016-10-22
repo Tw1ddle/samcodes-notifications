@@ -4,8 +4,8 @@
 	"license": "MIT",
 	"tags": ["notification","notifications","openfl","android","ios","nme"],
 	"description": "Local notification and icon badging support for iOS and Android OpenFL targets",
-	"version": "1.0.3",
-	"releasenote": "Minor tweaks to Android notification icon appearances",
+	"version": "1.0.4",
+	"releasenote": "Fix bug displaying high dpi notification icons on some devices",
 	"contributors": ["samcodes"],
 	"dependencies": {}
 }
