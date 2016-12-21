@@ -12,8 +12,11 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ApplicationInfo;
+import android.os.Handler;
+import android.os.Looper;
 import android.view.Window;
 import android.util.Log;
+import java.lang.Runnable;
 import java.util.concurrent.ConcurrentHashMap;
 import me.leolin.shortcutbadger.ShortcutBadger;
 import org.haxe.extension.Extension;
@@ -115,7 +118,7 @@ class Common {
 	}
 	
 	// Set application icon badge number
-	public static boolean setApplicationIconBadgeNumber(Context context, int number) {
+	public static boolean setApplicationIconBadgeNumber(final Context context, final int number) {
 		SharedPreferences.Editor editor = getApplicationIconBadgeSettings(context).edit();
 		if(editor == null) {
 			Log.i(TAG, "Failed to set application icon badge number");
@@ -125,14 +128,32 @@ class Common {
 		boolean committed = editor.commit();
 		if(!committed) {
 			Log.i(TAG, "Failed to record last known badge count to preferences");
+			return false;
+		}
+		
+		if(Looper.getMainLooper() == null) {
+			Log.i(TAG, "Failed to get main looper?");
+			return false;
 		}
 		
 		if(number <= 0) {
 			Log.i(TAG, "Clearing application icon badge number");
-			return ShortcutBadger.removeCount(context);
+			new Handler(Looper.getMainLooper()).post(new Runnable() {
+				@Override
+				public void run() {
+					ShortcutBadger.removeCount(context);
+				}
+			});
 		} else {
 			Log.i(TAG, "Setting application icon badge number");
-			return ShortcutBadger.applyCount(context, number);
+			new Handler(Looper.getMainLooper()).post(new Runnable() {
+				@Override
+				public void run() {
+					ShortcutBadger.applyCount(context, number);
+				}
+			});
 		}
+		
+		return true;
 	}
 }
