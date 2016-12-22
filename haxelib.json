@@ -4,8 +4,8 @@
 	"license": "MIT",
 	"tags": ["notification","notifications","openfl","android","ios","nme"],
 	"description": "Local notification and icon badging support for iOS and Android OpenFL targets",
-	"version": "1.0.4",
-	"releasenote": "Fix bug displaying high dpi notification icons on some devices",
+	"version": "1.0.5",
+	"releasenote": "Update to latest version of ShortcutBadger, fix badging error affecting some Android devices",
 	"contributors": ["samcodes"],
 	"dependencies": {}
 }

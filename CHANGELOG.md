@@ -1,5 +1,8 @@
 # CHANGELOG
 
+## 1.0.4 -> 1.0.5
+ * Update to latest version of ShortcutBadger, fix badging error affecting some Android devices.
+
 ## 1.0.3 -> 1.0.4
  * Fix bug displaying high dpi notification icons on some devices.
 
