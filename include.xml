@@ -3,6 +3,7 @@
 	<ndll name="samcodesnotifications" if="ios" />
 	
 	<section if="android">
+		<haxelib name="extension-android-support-v4" if="openfl-next || openfl-legacy" />
 		<dependency name="samcodes-notifications" path ="dependencies/samcodes-notifications" />
 		<android extension="com.samcodes.notifications.NotificationsExtension" />
 		
