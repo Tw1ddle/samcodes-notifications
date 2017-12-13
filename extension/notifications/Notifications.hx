@@ -12,8 +12,8 @@ import extension.notifications.PrimeLoader;
 class Notifications {
 	// Note, keeping these separate since the common parameters serve pretty different purposes
 	#if android
-	public static function scheduleLocalNotification(slot:Int, triggerAfterSecs:Float, titleText:String, subtitleText:String, messageBodyText:String, tickerText:String, incrementBadgeCount:Bool):Void {
-		schedule_local_notification(slot, triggerAfterSecs, titleText, subtitleText, messageBodyText, tickerText, incrementBadgeCount);
+	public static function scheduleLocalNotification(slot:Int, triggerAfterSecs:Float, titleText:String, subtitleText:String, messageBodyText:String, tickerText:String, incrementBadgeCount:Bool, ongoing=true):Void {
+		schedule_local_notification(slot, triggerAfterSecs, titleText, subtitleText, messageBodyText, tickerText, incrementBadgeCount, ongoing);
 	}
 	#elseif ios
 	public static function scheduleLocalNotification(slot:Int, triggerAfterSecs:Float, titleText:String, messageBodyText:String, actionButtonText:String, incrementBadgeCount:Bool):Void {
@@ -58,7 +58,7 @@ class Notifications {
 	private static inline function bindJNI(jniMethod:String, jniSignature:String) {
 		return JNI.createStaticMethod(packageName, jniMethod, jniSignature);
 	}
-	private static var schedule_local_notification = bindJNI("scheduleLocalNotification", "(IFLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Z)V");
+	private static var schedule_local_notification = bindJNI("scheduleLocalNotification", "(IFLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZ)V");
 	private static var cancel_local_notification = bindJNI("cancelLocalNotification", "(I)V");
 	private static var cancel_local_notifications = bindJNI("cancelLocalNotifications", "()V");
 	private static var get_application_icon_badge_number = bindJNI("getApplicationIconBadgeNumber", "()I");
