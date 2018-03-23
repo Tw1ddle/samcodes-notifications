@@ -1,7 +1,7 @@
 package extension.notifications;
 
 #if android
-import openfl.utils.JNI;
+import lime.system.JNI;
 #end
 
 #if ios
