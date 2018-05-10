@@ -41,6 +41,7 @@ class Common {
 	public static final String MESSAGE_BODY_TEXT_TAG = "messagetext";
 	public static final String TICKER_TEXT_TAG = "tickertext";
 	public static final String INCREMENT_BADGE_COUNT_TAG = "incrementbadge";
+	public static final String ONGOING_TAG = "ongoing";
 	
 	public static String getPackageName() {
 		return "::APP_PACKAGE::";
@@ -59,7 +60,7 @@ class Common {
 	}
 	
 	// Write notification data to preferences
-	public static void writePreference(Context context, int slot, Long alertTime, String titleText, String subtitleText, String messageBodyText, String tickerText, boolean incrementBadgeCount) {
+	public static void writePreference(Context context, int slot, Long alertTime, String titleText, String subtitleText, String messageBodyText, String tickerText, boolean incrementBadgeCount, boolean ongoing) {
 		SharedPreferences.Editor editor = getNotificationSettings(context, slot).edit();
 		if(editor == null) {
 			Log.i(TAG, "Failed to write notification to preferences");
@@ -72,6 +73,7 @@ class Common {
 		editor.putString(MESSAGE_BODY_TEXT_TAG, messageBodyText);
 		editor.putString(TICKER_TEXT_TAG, tickerText);
 		editor.putBoolean(INCREMENT_BADGE_COUNT_TAG, incrementBadgeCount);
+		editor.putBoolean(ONGOING_TAG, ongoing);
 		boolean committed = editor.commit();
 		
 		if(!committed) {
