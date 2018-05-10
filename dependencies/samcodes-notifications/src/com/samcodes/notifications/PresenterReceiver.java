@@ -53,6 +53,7 @@ public class PresenterReceiver extends BroadcastReceiver {
 		String subtitleText = prefs.getString(Common.SUBTITLE_TEXT_TAG, "");
 		String messageBodyText = prefs.getString(Common.MESSAGE_BODY_TEXT_TAG, "");
 		String tickerText = prefs.getString(Common.TICKER_TEXT_TAG, "");
+		Boolean ongoing = prefs.getBoolean(Common.ONGOING_TAG, false);
 		Boolean incrementBadgeCount = prefs.getBoolean(Common.INCREMENT_BADGE_COUNT_TAG, false);
 		
 		Common.erasePreference(context, slot);
@@ -60,11 +61,11 @@ public class PresenterReceiver extends BroadcastReceiver {
 		if(incrementBadgeCount) {
 			Common.setApplicationIconBadgeNumber(context, Common.getApplicationIconBadgeNumber(context) + 1);
 		}
-		sendNotification(context, slot, titleText, subtitleText, messageBodyText, tickerText);
+		sendNotification(context, slot, titleText, subtitleText, messageBodyText, tickerText, ongoing);
 	}
 	
 	// Actually send the local notification to the device
-	private static void sendNotification(Context context, int slot, String titleText, String subtitleText, String messageBodyText, String tickerText) {
+	private static void sendNotification(Context context, int slot, String titleText, String subtitleText, String messageBodyText, String tickerText, Boolean ongoing) {
 		Context applicationContext = context.getApplicationContext();
 		if(applicationContext == null) {
 			Log.i(Common.TAG, "Failed to get application context");
@@ -126,12 +127,13 @@ public class PresenterReceiver extends BroadcastReceiver {
 		builder.setSubText(subtitleText);
 		builder.setContentText(messageBodyText);
 		builder.setTicker(tickerText);
+
 		if(largeIcon != null) {
 			builder.setLargeIcon(largeIcon);
 		}
 		builder.setSmallIcon(smallIconId);
 		builder.setContentIntent(pendingIntent);
-		builder.setOngoing(false);
+		builder.setOngoing(ongoing);
 		builder.setWhen(System.currentTimeMillis());
 		builder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_VIBRATE | NotificationCompat.DEFAULT_LIGHTS);
 		builder.build();
