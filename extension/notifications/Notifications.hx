@@ -10,9 +10,10 @@ import extension.notifications.PrimeLoader;
 
 #if (android || ios)
 class Notifications {
-	// Note, keeping these separate since the common parameters serve pretty different purposes
+	// Note, keeping these methods separate since even the common parameters here serve pretty different purposes
+	// It would be better to wrap these methods if you use them a lot, as they might change in the future
 	#if android
-	public static function scheduleLocalNotification(slot:Int, triggerAfterSecs:Float, titleText:String, subtitleText:String, messageBodyText:String, tickerText:String, incrementBadgeCount:Bool, ongoing=true):Void {
+	public static function scheduleLocalNotification(slot:Int, triggerAfterSecs:Float, titleText:String, subtitleText:String, messageBodyText:String, tickerText:String, incrementBadgeCount:Bool, ongoing:Bool):Void {
 		schedule_local_notification(slot, triggerAfterSecs, titleText, subtitleText, messageBodyText, tickerText, incrementBadgeCount, ongoing);
 	}
 	#elseif ios
