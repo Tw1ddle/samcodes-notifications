@@ -1,5 +1,7 @@
 # Haxe Local Notifications
 
+[![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](https://github.com/Tw1ddle/samcodes-notifications/blob/master/LICENSE)
+
 Local notifications support for Haxe OpenFL Android and iOS targets. See the demo [here](https://github.com/Tw1ddle/samcodes-notifications-demo).
 
 ## Features

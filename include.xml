@@ -6,7 +6,16 @@
 		<dependency name="samcodes-notifications" path ="dependencies/samcodes-notifications" />
 		<android extension="com.samcodes.notifications.NotificationsExtension" />
 		
-		<!-- TODO assets path seems like a dubious way to copy source files around -->
+		<!-- See: https://github.com/player-03/google-play-services -->
+		<set name="playServicesVersion" value="+" unless="playServicesVersion" />
+		
+		<!-- Include the entire latest version of the support-v4 library for the notification compat builder -->
+		<set name="support-v4" />
+		<set name="supportLibraryVersion" value="+" />
+		
+		<haxelib name="google-play-services" />
+		
+		<!-- NOTE assets path seems like a dubious way to copy source files around, is there a better way? -->
 		<assets path="dependencies/shortcutbadger/ShortcutBadger/src/main/java/" rename="deps/samcodes-notifications/src/" type="template" />
 	</section>
 </project>
