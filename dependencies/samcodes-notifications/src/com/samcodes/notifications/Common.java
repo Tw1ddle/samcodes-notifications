@@ -51,11 +51,11 @@ class Common {
 	}
 	
 	public static SharedPreferences getNotificationSettings(Context context, int slot) {
-		return context.getSharedPreferences(getNotificationName(slot), Context.MODE_WORLD_READABLE);
+		return context.getSharedPreferences(getNotificationName(slot), Context.MODE_PRIVATE);
 	}
 	
 	public static SharedPreferences getApplicationIconBadgeSettings(Context context) {
-		return context.getSharedPreferences("notificationsiconbadge", Context.MODE_WORLD_READABLE);
+		return context.getSharedPreferences("notificationsiconbadge", Context.MODE_PRIVATE);
 	}
 	
 	// Write notification data to preferences

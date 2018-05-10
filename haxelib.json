@@ -5,7 +5,7 @@
 	"tags": ["notification","notifications","openfl","android","ios","nme"],
 	"description": "Local notification and icon badging support for iOS and Android OpenFL targets",
 	"version": "1.0.6",
-	"releasenote": "Update for OpenFL 8 support, update to latest version of ShortcutBadger.",
+	"releasenote": "Update for OpenFL 8 support, update to latest version of ShortcutBadger and more (see changelog)",
 	"contributors": ["samcodes"],
 	"dependencies": { "google-play-services" : "" }
 }

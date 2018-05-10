@@ -38,7 +38,7 @@ public class PresenterReceiver extends BroadcastReceiver {
 	}
 	
 	private static void presentNotification(Context context, String action) {
-		SharedPreferences prefs = context.getSharedPreferences(action, Context.MODE_WORLD_READABLE);
+		SharedPreferences prefs = context.getSharedPreferences(action, Context.MODE_PRIVATE);
 		if(prefs == null) {
 			Log.i(Common.TAG, "Failed to read notification preference data");
 			return;
