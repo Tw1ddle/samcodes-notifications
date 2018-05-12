@@ -5,7 +5,9 @@
  * Update to latest version of ShortcutBadger.
  * No longer embedding the extension-v4 jar in the haxelib (install it via the Android SDK manager instead).
  * Added "ongoing" parameter for Android notifications to optionally make the notification the ongoing type.
- * Now interacting with SharedPreferences with ''MODE_PRIVATE'' instead of ''MODE_WORLD_READABLE''.
+ * Added "smallIconName" and "largeIconName" parameters for Android notifications, for optionally specifying custom notification icons from your Android package resources.
+ * Now attempts to reschedule notifications on app launch on Android, for the case force-stopping resulted in alarms being cancelled.
+ * Now using SharedPreferences with ''MODE_PRIVATE'' instead of ''MODE_WORLD_READABLE''.
 
 ## 1.0.4 -> 1.0.5
  * Update to latest version of ShortcutBadger, fix badging error affecting some Android devices.

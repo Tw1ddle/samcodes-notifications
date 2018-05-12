@@ -7,6 +7,7 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Bundle;
 import android.util.Log;
 import com.samcodes.notifications.Common;
 import java.lang.System;
@@ -15,10 +16,19 @@ import me.leolin.shortcutbadger.ShortcutBadger;
 import org.haxe.extension.Extension;
 
 public class NotificationsExtension extends Extension {
-	public static void scheduleLocalNotification(int slot, float triggerAfterSecs, String titleText, String subtitleText, String messageBodyText, String tickerText, boolean incrementBadgeCount, boolean ongoing) {
+	@Override public void onCreate (Bundle savedInstanceState) {
+		super.onCreate(savedInstanceState);
+		
+		// The extension should only be created when the app is launched
+		// So at this point, local notifications could be have been cancelled due to a previous force-stopping of the app
+		// So we attempt to re-register all pending notifications
+		Common.reregisterAlarms(Extension.mainContext);
+	}
+	
+	public static void scheduleLocalNotification(int slot, float triggerAfterSecs, String titleText, String subtitleText, String messageBodyText, String tickerText, boolean incrementBadgeCount, boolean ongoing, String smallIconName, String largeIconName) {
 		Long alertTime = System.currentTimeMillis() + (long)(triggerAfterSecs * 1000.0f); // UTC time to schedule in milliseconds
-		Common.writePreference(mainContext, slot, alertTime, titleText, subtitleText, messageBodyText, tickerText, incrementBadgeCount, ongoing);
-		PendingIntent intent = Common.scheduleLocalNotification(mainContext, slot, alertTime, titleText, subtitleText, messageBodyText, tickerText);
+		Common.writePreference(mainContext, slot, alertTime, titleText, subtitleText, messageBodyText, tickerText, incrementBadgeCount, ongoing, smallIconName, largeIconName);
+		PendingIntent intent = Common.scheduleLocalNotification(mainContext, slot, alertTime);
 		Common.pendingIntents.put(slot, intent);
 	}
 	

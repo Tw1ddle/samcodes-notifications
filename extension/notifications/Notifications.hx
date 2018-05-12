@@ -24,9 +24,11 @@ class Notifications {
 	   @param	tickerText The ticker/status bar text shown in the notification (likely to be what's read by accessibility services too)
 	   @param	incrementBadgeCount Whether to increment the application badge count when the notification is triggered
 	   @param	isOngoing Whether the notification is the "ongoing" (persistent) notification type
+	   @param	smallIconName The name of the small icon resource to show with the notification, will use generic icon if empty or null
+	   @param	largeIconName The name of the large icon resource to show with the notification, will use application or generic icon if empty or null
 	**/
-	public static function scheduleLocalNotification(slot:Int, triggerAfterSecs:Float, titleText:String, subtitleText:String, messageBodyText:String, tickerText:String, incrementBadgeCount:Bool, isOngoing:Bool):Void {
-		schedule_local_notification(slot, triggerAfterSecs, titleText, subtitleText, messageBodyText, tickerText, incrementBadgeCount, isOngoing);
+	public static function scheduleLocalNotification(slot:Int, triggerAfterSecs:Float, titleText:String, subtitleText:String, messageBodyText:String, tickerText:String, incrementBadgeCount:Bool, isOngoing:Bool, smallIconName:String, largeIconName:String):Void {
+		schedule_local_notification(slot, triggerAfterSecs, titleText, subtitleText, messageBodyText, tickerText, incrementBadgeCount, isOngoing, smallIconName, largeIconName);
 	}
 	#elseif ios
 	/**
@@ -80,7 +82,7 @@ class Notifications {
 	private static inline function bindJNI(jniMethod:String, jniSignature:String) {
 		return JNI.createStaticMethod(packageName, jniMethod, jniSignature);
 	}
-	private static var schedule_local_notification = bindJNI("scheduleLocalNotification", "(IFLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZ)V");
+	private static var schedule_local_notification = bindJNI("scheduleLocalNotification", "(IFLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZLjava/lang/String;Ljava/lang/String;)V");
 	private static var cancel_local_notification = bindJNI("cancelLocalNotification", "(I)V");
 	private static var cancel_local_notifications = bindJNI("cancelLocalNotifications", "()V");
 	private static var get_application_icon_badge_number = bindJNI("getApplicationIconBadgeNumber", "()I");

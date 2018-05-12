@@ -42,6 +42,8 @@ class Common {
 	public static final String TICKER_TEXT_TAG = "tickertext";
 	public static final String INCREMENT_BADGE_COUNT_TAG = "incrementbadge";
 	public static final String ONGOING_TAG = "ongoing";
+	public static final String SMALL_ICON_NAME_TAG = "smalliconname";
+	public static final String LARGE_ICON_NAME_TAG = "largeiconname";
 	
 	public static String getPackageName() {
 		return "::APP_PACKAGE::";
@@ -60,7 +62,7 @@ class Common {
 	}
 	
 	// Write notification data to preferences
-	public static void writePreference(Context context, int slot, Long alertTime, String titleText, String subtitleText, String messageBodyText, String tickerText, boolean incrementBadgeCount, boolean ongoing) {
+	public static void writePreference(Context context, int slot, Long alertTime, String titleText, String subtitleText, String messageBodyText, String tickerText, boolean incrementBadgeCount, boolean ongoing, String smallIconName, String largeIconName) {
 		SharedPreferences.Editor editor = getNotificationSettings(context, slot).edit();
 		if(editor == null) {
 			Log.i(TAG, "Failed to write notification to preferences");
@@ -74,6 +76,8 @@ class Common {
 		editor.putString(TICKER_TEXT_TAG, tickerText);
 		editor.putBoolean(INCREMENT_BADGE_COUNT_TAG, incrementBadgeCount);
 		editor.putBoolean(ONGOING_TAG, ongoing);
+		editor.putString(SMALL_ICON_NAME_TAG, smallIconName);
+		editor.putString(LARGE_ICON_NAME_TAG, largeIconName);
 		boolean committed = editor.commit();
 		
 		if(!committed) {
@@ -97,7 +101,7 @@ class Common {
 	}
 	
 	// Schedule a local notification
-	public static PendingIntent scheduleLocalNotification(Context context, int slot, Long alertTime, String titleText, String subtitleText, String messageBodyText, String tickerText) {
+	public static PendingIntent scheduleLocalNotification(Context context, int slot, Long alertTime) {
 		Log.i(TAG, "Scheduling local notification");
 		Intent alertIntent = new Intent(getNotificationName(slot));
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, slot, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
@@ -106,6 +110,42 @@ class Common {
 			alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, pendingIntent);
 		}
 		return pendingIntent;
+	}
+	
+	// Perform alarm re-registration. This is required after alarms are cleared because the device is turned off or rebooted, or the application was forced-stopped
+	public static void reregisterAlarms(Context context) {
+		if(context == null) {
+			Log.i(Common.TAG, "Failed to re-register alarms, context was null");
+			return;
+		}
+		
+		Common.pendingIntents.clear(); // Clear out the pending intents as a precaution
+		
+		Long currentTime = System.currentTimeMillis();
+		
+		Log.i(Common.TAG, "Re-registering application notifications");
+		for(int slot = 0; slot < Common.MAX_NOTIFICATION_SLOTS; slot++) {
+			SharedPreferences prefs = Common.getNotificationSettings(context, slot);
+			if(prefs == null) {
+				Log.i(Common.TAG, "Failed to fetch shared preferences for alarm re-registration");
+				continue;
+			}
+			Long alertTime = prefs.getLong(Common.UTC_SCHEDULED_TIME, -1);
+			if(alertTime == -1) {
+				Log.i(Common.TAG, "Encountered unreadable/not-set notification data when trying to re-register alarms");
+				continue;
+			}
+			if(alertTime - currentTime < 0) {
+				// Reschedule notifications whose time passed while the phone was powered off to the very-near future, preserving the original order
+				double overdueByMillis = Math.abs(alertTime - currentTime);
+				double orderPreservingDelay = 100 + (1000 / (1 + Math.log10(overdueByMillis + 1)));
+				alertTime = currentTime + Double.valueOf(orderPreservingDelay).longValue();
+			}
+			
+			Log.i(Common.TAG, "Rescheduling notification with slot id " + slot);
+			PendingIntent intent = Common.scheduleLocalNotification(context, slot, alertTime);
+			Common.pendingIntents.put(slot, intent);
+		}
 	}
 	
 	// Get application icon badge number

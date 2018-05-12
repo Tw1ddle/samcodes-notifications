@@ -9,6 +9,7 @@ Local notifications support for Haxe OpenFL Android and iOS targets. See the dem
 * Schedule, manage and cancel local device notifications.
 * Manage application icon notification badge counts.
 * Open application when notification is tapped.
+* Custom notification icons (on Android only).
 
 If there is something you would like adding let me know. Pull requests welcomed too.
 
@@ -28,7 +29,9 @@ Include the haxelib through Project.xml:
 ```
 
 ## Known Issues
-Due to a bug it is not currently possible to cancel individual notifications on iOS, though they can be cancelled all together. This means that if you schedule notifications using the same slots, they will not override each other on iOS, but will on Android.
+Due to a bug you cannot cancel individual notifications on iOS, though they can be cancelled all together. This means that if you schedule notifications using the same slots, any older untriggered notifications will not be overridden on iOS, but will on Android.
+
+Due to the way Android alarm management works, force-stopping an application always cancels scheduled notifications. Notifications cancelled this way will be rescheduled the next time the device is rebooted, or when the app is relaunched.
 
 ## Example
 
