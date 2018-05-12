@@ -37,9 +37,13 @@ Due to the way Android alarm management works, force-stopping an application alw
 
 See the [demo app](https://github.com/Tw1ddle/samcodes-notifications-demo) for a complete example.
 
-Android notifications and badging. Badging is done using [ShortcutBadger](https://github.com/leolin310148/ShortcutBadger):
+Android notifications with badging. Badging is done using [ShortcutBadger](https://github.com/leolin310148/ShortcutBadger):
 
 ![Screenshot of Android notification](https://github.com/Tw1ddle/samcodes-notifications-demo/blob/master/screenshots/notification-android.png?raw=true "Notification Android")
+
+Android notification with custom notification icons:
+
+![Screenshot of Android notification](https://github.com/Tw1ddle/samcodes-notifications-demo/blob/master/screenshots/notification-android-custom-icons.png?raw=true "Notification Android")
 
 iOS notifications and badging:
 
