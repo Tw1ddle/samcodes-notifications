@@ -2,6 +2,7 @@ package com.samcodes.notifications;
 
 import android.app.Activity;
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -57,17 +58,21 @@ public class PresenterReceiver extends BroadcastReceiver {
 		Boolean incrementBadgeCount = prefs.getBoolean(Common.INCREMENT_BADGE_COUNT_TAG, false);
 		String largeIconName = prefs.getString(Common.LARGE_ICON_NAME_TAG, "");
 		String smallIconName = prefs.getString(Common.SMALL_ICON_NAME_TAG, "");
+		String channelId = prefs.getString(Common.CHANNEL_ID_TAG, "pre_android_oreo_notifications");
+		String channelName = prefs.getString(Common.CHANNEL_NAME_TAG, "Pre-Android Oreo Notifications");
+		String channelDescription = prefs.getString(Common.CHANNEL_DESCRIPTION_TAG, "Notifications");
+		int channelImportance = prefs.getInt(Common.CHANNEL_IMPORTANCE_TAG, NotificationManager.IMPORTANCE_DEFAULT);
 		
 		Common.erasePreference(context, slot);
 		
 		if(incrementBadgeCount) {
 			Common.setApplicationIconBadgeNumber(context, Common.getApplicationIconBadgeNumber(context) + 1);
 		}
-		sendNotification(context, slot, titleText, subtitleText, messageBodyText, tickerText, ongoing, smallIconName, largeIconName);
+		sendNotification(context, slot, titleText, subtitleText, messageBodyText, tickerText, ongoing, smallIconName, largeIconName, channelId, channelName, channelDescription, channelImportance);
 	}
 	
 	// Actually send the local notification to the device
-	private static void sendNotification(Context context, int slot, String titleText, String subtitleText, String messageBodyText, String tickerText, Boolean ongoing, String smallIconName, String largeIconName) {
+	private static void sendNotification(Context context, int slot, String titleText, String subtitleText, String messageBodyText, String tickerText, Boolean ongoing, String smallIconName, String largeIconName, String channelId, String channelName, String channelDescription, int channelImportance) {
 		Context applicationContext = context.getApplicationContext();
 		if(applicationContext == null) {
 			Log.i(Common.TAG, "Failed to get application context");
@@ -126,10 +131,25 @@ public class PresenterReceiver extends BroadcastReceiver {
 		builder.setOngoing(ongoing);
 		builder.setWhen(System.currentTimeMillis());
 		builder.setDefaults(NotificationCompat.DEFAULT_SOUND | NotificationCompat.DEFAULT_VIBRATE | NotificationCompat.DEFAULT_LIGHTS);
+		
+		if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+			builder.setChannelId(channelId);
+		}
+		
 		builder.build();
 		
 		NotificationManager notificationManager = ((NotificationManager)context.getSystemService(Context.NOTIFICATION_SERVICE));
 		if(notificationManager != null) {
+			
+			if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+				NotificationChannel notificationChannel = new NotificationChannel(channelId, channelName, channelImportance);
+				notificationChannel.setDescription(channelDescription);
+				
+				// Register the channel with the system. Note that the importance or other notification behaviors can't be changed
+				// after it has been created (the user will have control via their app settings instead)
+				notificationManager.createNotificationChannel(notificationChannel);
+			}
+			
 			notificationManager.notify(slot, builder.getNotification());
 		}
 	}

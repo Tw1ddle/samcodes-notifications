@@ -4,30 +4,39 @@
 	<!-- To receive the boot event, to reschedule alarms which would otherwise be lost after reboot -->
 	<uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED"/>
 	
-	<!-- General Android Launcher badge permissions, apparently commented out in ShortcutBadger due to Google Play terms violations? -->
-	<!-- <uses-permission android:name="com.android.launcher.permission.READ_SETTINGS"/> -->
-	<!-- <uses-permission android:name="com.android.launcher.permission.WRITE_SETTINGS"/> -->
-	<!-- <uses-permission android:name="com.android.launcher.permission.INSTALL_SHORTCUT"/> -->
-	<!-- <uses-permission android:name="com.android.launcher.permission.UNINSTALL_SHORTCUT"/> -->
-	
 	<!-- Badge permission for Samsung -->
-	<uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY"/>
 	<uses-permission android:name="com.sec.android.provider.badge.permission.READ"/>
 	<uses-permission android:name="com.sec.android.provider.badge.permission.WRITE"/>
+
 	<!-- Badge permission for HTC -->
 	<uses-permission android:name="com.htc.launcher.permission.READ_SETTINGS"/>
 	<uses-permission android:name="com.htc.launcher.permission.UPDATE_SHORTCUT"/>
+
 	<!-- Badge permission for Sony -->
-    <uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE"/>
-    <uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE"/>
+	<uses-permission android:name="com.sonyericsson.home.permission.BROADCAST_BADGE"/>
+	<uses-permission android:name="com.sonymobile.home.permission.PROVIDER_INSERT_BADGE"/>
+
 	<!-- Badge permission for Apex -->
 	<uses-permission android:name="com.anddoes.launcher.permission.UPDATE_COUNT"/>
+
 	<!-- Badge permission for Solid -->
 	<uses-permission android:name="com.majeur.launcher.permission.UPDATE_BADGE"/>
-    <!-- Badge permission for Huawei-->
-    <uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE"/>
-    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS"/>
-    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS"/>
+
+	<!-- Badge permission for Huawei -->
+	<uses-permission android:name="com.huawei.android.launcher.permission.CHANGE_BADGE"/>
+	<uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS"/>
+	<uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS"/>
+
+	<!-- Badge permission for ZUK -->
+	<uses-permission android:name="android.permission.READ_APP_BADGE"/>
+
+	<!-- Badge permission for OPPO -->
+	<uses-permission android:name="com.oppo.launcher.permission.READ_SETTINGS"/>
+	<uses-permission android:name="com.oppo.launcher.permission.WRITE_SETTINGS"/>
+
+	<!-- Badge permission for EvMe -->
+	<uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_READ"/>
+	<uses-permission android:name="me.everything.badger.permission.BADGE_COUNT_WRITE"/>
 	
 	 <application>
 		 <receiver android:name="com.samcodes.notifications.BootReceiver" android:exported="true" android:enabled="true">

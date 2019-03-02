@@ -8,12 +8,29 @@ import lime.system.JNI;
 import extension.notifications.PrimeLoader;
 #end
 
+#if android
+
+// Android uses the importance of a notification to determine how much the notification should interrupt the user (visually and audibly). The higher the importance of a notification, the more interruptive the notification will be.
+// Mirrors NotificationImportance constants from Android 8.0 (API level 26)
+@:enum abstract NotificationImportance(Int)
+{
+	var NONE = 0;
+	var MIN = 1;
+	var LOW = 2;
+	var DEFAULT = 3;
+	var HIGH = 4;
+	var MAX = 5;
+}
+
+#end
+
 #if (android || ios)
 class Notifications {
 	// Note, keeping these methods separate since even the common parameters here serve pretty different purposes
 	// It would be better to wrap these methods if you use them a lot, as they might change in the future
 	// See the demo project here for usage examples: https://github.com/Tw1ddle/samcodes-notifications-demo
 	#if android
+	
 	/**
 	   Schedules a local notification on Android
 	   @param	slot The slot index of the notification (you should define a set of values for these using an enum abstract)
@@ -26,9 +43,14 @@ class Notifications {
 	   @param	isOngoing Whether the notification is the "ongoing" (persistent) notification type
 	   @param	smallIconName The name of the small icon resource to show with the notification, will use generic icon if empty or null
 	   @param	largeIconName The name of the large icon resource to show with the notification, will use application or generic icon if empty or null
+	   @param	channelId Identifier for the channel that the notification will be assigned to. Starting in Android 8.0, notifications must be assigned a channel or they do not appear.
+	   @param	channelName The display name of the channel that the notification will be assigned to.
+	   @param	channelDescription The descriptive text for the channel that the notification will be assigned to.
+	   @param	importance The importance of the notification. The higher the importance, the more interruptive the notification will be. Note this can only be set once per channel (i.e. the first time it's set, it sticks).
 	**/
-	public static function scheduleLocalNotification(slot:Int, triggerAfterSecs:Float, titleText:String, subtitleText:String, messageBodyText:String, tickerText:String, incrementBadgeCount:Bool, isOngoing:Bool, smallIconName:String, largeIconName:String):Void {
-		schedule_local_notification(slot, triggerAfterSecs, titleText, subtitleText, messageBodyText, tickerText, incrementBadgeCount, isOngoing, smallIconName, largeIconName);
+	public static function scheduleLocalNotification(
+	slot:Int, triggerAfterSecs:Float, titleText:String, subtitleText:String, messageBodyText:String, tickerText:String, incrementBadgeCount:Bool, isOngoing:Bool, smallIconName:String, largeIconName:String, channelId:String, channelName:String, channelDescription:String, channelImportance:NotificationImportance):Void {
+		schedule_local_notification(slot, triggerAfterSecs, titleText, subtitleText, messageBodyText, tickerText, incrementBadgeCount, isOngoing, smallIconName, largeIconName, channelId, channelName, channelDescription, channelImportance);
 	}
 	#elseif ios
 	/**
@@ -82,7 +104,7 @@ class Notifications {
 	private static inline function bindJNI(jniMethod:String, jniSignature:String) {
 		return JNI.createStaticMethod(packageName, jniMethod, jniSignature);
 	}
-	private static var schedule_local_notification = bindJNI("scheduleLocalNotification", "(IFLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZLjava/lang/String;Ljava/lang/String;)V");
+	private static var schedule_local_notification = bindJNI("scheduleLocalNotification", "(IFLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;ZZLjava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;I)V");
 	private static var cancel_local_notification = bindJNI("cancelLocalNotification", "(I)V");
 	private static var cancel_local_notifications = bindJNI("cancelLocalNotifications", "()V");
 	private static var get_application_icon_badge_number = bindJNI("getApplicationIconBadgeNumber", "()I");

@@ -24,5 +24,5 @@ android {
 
 dependencies {
 	compile project(':deps:extension-api')
-	compile 'com.android.support:support-v4:::SET_SUPPORT_LIBRARY_VERSION::'
+	compile 'com.android.support:support-v4:+'
 }

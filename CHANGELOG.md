@@ -1,5 +1,9 @@
 # CHANGELOG
 
+## 1.0.6 -> 1.0.7
+ * Update to latest version of ShortcutBadger.
+ * Changes for Android Oreo support, adding required channel and importance fields to notifications (old scheduled notifications will be assigned to a channel called "Pre-Android Oreo notifications").
+
 ## 1.0.5 -> 1.0.6
  * Update for latest OpenFL support.
  * Update to latest version of ShortcutBadger.

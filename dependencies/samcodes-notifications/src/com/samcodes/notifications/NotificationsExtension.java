@@ -25,9 +25,9 @@ public class NotificationsExtension extends Extension {
 		Common.reregisterAlarms(Extension.mainContext);
 	}
 	
-	public static void scheduleLocalNotification(int slot, float triggerAfterSecs, String titleText, String subtitleText, String messageBodyText, String tickerText, boolean incrementBadgeCount, boolean ongoing, String smallIconName, String largeIconName) {
+	public static void scheduleLocalNotification(int slot, float triggerAfterSecs, String titleText, String subtitleText, String messageBodyText, String tickerText, boolean incrementBadgeCount, boolean ongoing, String smallIconName, String largeIconName, String channelId, String channelName, String channelDescription, int channelImportance) {
 		Long alertTime = System.currentTimeMillis() + (long)(triggerAfterSecs * 1000.0f); // UTC time to schedule in milliseconds
-		Common.writePreference(mainContext, slot, alertTime, titleText, subtitleText, messageBodyText, tickerText, incrementBadgeCount, ongoing, smallIconName, largeIconName);
+		Common.writePreference(mainContext, slot, alertTime, titleText, subtitleText, messageBodyText, tickerText, incrementBadgeCount, ongoing, smallIconName, largeIconName, channelId, channelName, channelDescription, channelImportance);
 		PendingIntent intent = Common.scheduleLocalNotification(mainContext, slot, alertTime);
 		Common.pendingIntents.put(slot, intent);
 	}

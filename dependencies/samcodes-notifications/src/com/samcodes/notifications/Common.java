@@ -12,8 +12,10 @@ import android.content.SharedPreferences;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.content.pm.ApplicationInfo;
+import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
+import android.os.PowerManager;
 import android.view.Window;
 import android.util.Log;
 import java.lang.Runnable;
@@ -44,6 +46,10 @@ class Common {
 	public static final String ONGOING_TAG = "ongoing";
 	public static final String SMALL_ICON_NAME_TAG = "smalliconname";
 	public static final String LARGE_ICON_NAME_TAG = "largeiconname";
+	public static final String CHANNEL_ID_TAG = "channelid";
+	public static final String CHANNEL_NAME_TAG = "channelname";
+	public static final String CHANNEL_DESCRIPTION_TAG = "channeldescription";
+	public static final String CHANNEL_IMPORTANCE_TAG = "importance";
 	
 	public static String getPackageName() {
 		return "::APP_PACKAGE::";
@@ -62,7 +68,7 @@ class Common {
 	}
 	
 	// Write notification data to preferences
-	public static void writePreference(Context context, int slot, Long alertTime, String titleText, String subtitleText, String messageBodyText, String tickerText, boolean incrementBadgeCount, boolean ongoing, String smallIconName, String largeIconName) {
+	public static void writePreference(Context context, int slot, Long alertTime, String titleText, String subtitleText, String messageBodyText, String tickerText, boolean incrementBadgeCount, boolean ongoing, String smallIconName, String largeIconName, String channelId, String channelName, String channelDescription, int importance) {
 		SharedPreferences.Editor editor = getNotificationSettings(context, slot).edit();
 		if(editor == null) {
 			Log.i(TAG, "Failed to write notification to preferences");
@@ -78,6 +84,10 @@ class Common {
 		editor.putBoolean(ONGOING_TAG, ongoing);
 		editor.putString(SMALL_ICON_NAME_TAG, smallIconName);
 		editor.putString(LARGE_ICON_NAME_TAG, largeIconName);
+		editor.putString(CHANNEL_ID_TAG, channelId);
+		editor.putString(CHANNEL_NAME_TAG, channelName);
+		editor.putString(CHANNEL_DESCRIPTION_TAG, channelDescription);
+		editor.putInt(CHANNEL_IMPORTANCE_TAG, importance);
 		boolean committed = editor.commit();
 		
 		if(!committed) {
@@ -104,9 +114,17 @@ class Common {
 	public static PendingIntent scheduleLocalNotification(Context context, int slot, Long alertTime) {
 		Log.i(TAG, "Scheduling local notification");
 		Intent alertIntent = new Intent(getNotificationName(slot));
+		alertIntent.setClass(context, PresenterReceiver.class);
+		
 		PendingIntent pendingIntent = PendingIntent.getBroadcast(context, slot, alertIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 		AlarmManager alarmManager = (AlarmManager)context.getSystemService(Context.ALARM_SERVICE);
 		if(alarmManager != null) {
+			//if(Common.isDozeSupported() && Common.isDozeWhitelisted(context)) {
+			//	alarmManager.setExactAndAllowWhileIdle(AlarmManager.RTC_WAKEUP, alertTime, pendingIntent);
+			//} else {
+			//	alarmManager.setExact(AlarmManager.RTC_WAKEUP, alertTime, pendingIntent);
+			//}
+			
 			alarmManager.set(AlarmManager.RTC_WAKEUP, alertTime, pendingIntent);
 		}
 		return pendingIntent;
@@ -197,5 +215,17 @@ class Common {
 		}
 		
 		return true;
+	}
+	
+	private static boolean isDozeSupported() {
+		return Build.VERSION.SDK_INT >= Build.VERSION_CODES.M;
+	}
+
+	private static boolean isDozeWhitelisted(Context context) {
+		PowerManager powerManager = (PowerManager)context.getSystemService(Context.POWER_SERVICE);
+		if(powerManager == null) {
+			return false;
+		}
+		return powerManager.isIgnoringBatteryOptimizations(getPackageName());
 	}
 }
