@@ -12,6 +12,12 @@
 using namespace samcodesnotifications;
 
 #ifdef IPHONE
+void samcodesnotifications_request_notification_permissions()
+{
+	requestNotificationPermissions();
+}
+DEFINE_PRIME0v(samcodesnotifications_request_notification_permissions);
+
 void samcodesnotifications_schedule_local_notification(int slot, float triggerAfterSecs, HxString title, HxString message, HxString action, bool incrementBadgeCount)
 {
 	scheduleLocalNotification(slot, triggerAfterSecs, title.c_str(), message.c_str(), action.c_str(), incrementBadgeCount);

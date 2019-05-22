@@ -67,6 +67,14 @@ class Notifications {
 	}
 	#end
 	
+	#if ios
+	// Since about iOS 9+ you require user permission to show local notifications
+	// See: https://developer.apple.com/documentation/usernotifications/asking_permission_to_use_notifications
+	public static function requestNotificationPermissions():Void {
+		request_notification_permissions.call();
+	}
+	#end
+	
 	public static function cancelLocalNotification(slot:Int):Void {
 		#if android
 		cancel_local_notification(slot);
@@ -110,6 +118,7 @@ class Notifications {
 	private static var get_application_icon_badge_number = bindJNI("getApplicationIconBadgeNumber", "()I");
 	private static var set_application_icon_badge_number = bindJNI("setApplicationIconBadgeNumber", "(I)Z");
 	#elseif ios
+	private static var request_notification_permissions = PrimeLoader.load("samcodesnotifications_request_notification_permissions", "v");
 	private static var schedule_local_notification = PrimeLoader.load("samcodesnotifications_schedule_local_notification", "ifsssbv");
 	private static var cancel_local_notification = PrimeLoader.load("samcodesnotifications_cancel_local_notification", "iv");
 	private static var cancel_local_notifications = PrimeLoader.load("samcodesnotifications_cancel_local_notifications", "v");

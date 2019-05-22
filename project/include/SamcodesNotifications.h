@@ -3,6 +3,7 @@
 
 namespace samcodesnotifications
 {
+	void requestNotificationPermissions();
 	void scheduleLocalNotification(int slot, float triggerAfterSecs, const char* title, const char* message, const char* action, bool incrementBadgeCount);
 	void cancelLocalNotification(int slot);
 	void cancelLocalNotifications();

@@ -99,7 +99,7 @@
 	
 	return [UIApplication sharedApplication].applicationIconBadgeNumber;
 }
-	
+
 - (bool)setApplicationIconBadgeNumber:(int)number
 {
 	NSLog(@"NotificationsController setApplicationIconBadgeNumber");
@@ -154,17 +154,31 @@
 
 @end
 
+namespace {
+
+static NotificationsController* notificationsController = NULL;
+
+NotificationsController* getNotificationsController()
+{
+	if(notificationsController == NULL)
+	{
+		notificationsController = [[NotificationsController alloc] init];
+		[notificationsController requestNotificationPermissions]; // Request notification permission on first usage
+	}
+	return notificationsController;
+}
+
+}
+
 namespace samcodesnotifications
 {
-	NotificationsController* getNotificationsController()
+	void requestNotificationPermissions()
 	{
-		static NotificationsController* controller = NULL;
-		if(controller == NULL)
-		{
-			controller = [[NotificationsController alloc] init];
-			[controller requestNotificationPermissions]; // Request notification permission on first usage
+		if(notificationsController == NULL) {
+			getNotificationsController(); // Request permissions on creation
+		} else {
+			[notificationsController requestNotificationPermissions]; // If the user has granted permissions already, this will pass silently
 		}
-		return controller;
 	}
 	
 	void scheduleLocalNotification(int slot, float triggerAfterSecs, const char* title, const char* message, const char* action, bool incrementBadgeCount)
