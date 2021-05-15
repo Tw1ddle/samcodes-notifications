@@ -35,7 +35,7 @@
 	UILocalNotification* notification = [[UILocalNotification alloc] init];
 	notification.fireDate = [NSDate dateWithTimeIntervalSinceNow:timeInterval];
 	notification.timeZone = [NSTimeZone defaultTimeZone];
-	notification.repeatInterval = nil;
+	notification.repeatInterval = 0;
 	notification.alertBody = messageBody;
 	
 	if ([notification respondsToSelector:@selector(alertTitle)]) // iOS 8.2 and above
