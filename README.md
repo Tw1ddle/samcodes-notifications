@@ -1,6 +1,5 @@
 # Haxe Local Notifications
 
-[![Travis Build Status](https://img.shields.io/travis/Tw1ddle/samcodes-notifications.svg?style=flat-square)](https://travis-ci.org/Tw1ddle/samcodes-notifications)
 [![License](http://img.shields.io/:license-mit-blue.svg?style=flat-square)](https://github.com/Tw1ddle/samcodes-notifications/blob/master/LICENSE)
 
 Local notifications support for Haxe OpenFL Android and iOS targets. See the demo [here](https://github.com/Tw1ddle/samcodes-notifications-demo).
